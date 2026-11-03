@@ -1,0 +1,15 @@
+{
+  "name": "Kraken Social Prototype",
+  "short_name": "Kraken Social",
+  "description": "Clickable prototype of proposed Kraken social features. Illustrative data only.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F6F5FA",
+  "theme_color": "#6D3BE0",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
