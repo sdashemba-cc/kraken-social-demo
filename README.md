@@ -1,4 +1,4 @@
-# Kraken Social Prototype (v2)
+# Kraken Social Prototype (v3)
 
 A clickable demo of proposed Kraken social features. All names, prices and counts are made up. Nothing places a real order.
 
@@ -11,7 +11,7 @@ Live link after setup: https://sdashemba-cc.github.io/kraken-social-demo/
 3. Drag in everything from this folder (`index.html`, `sw.js`, `manifest.webmanifest`, `.nojekyll`, and the `icons` folder). GitHub replaces files with the same names. Commit to main.
 4. Wait about a minute for Pages to redeploy, then reload the link. If you still see the old version, hard refresh (Ctrl/Cmd+Shift+R), or close and reopen the installed app once.
 
-Only `index.html` and `sw.js` changed from v1. The icons and manifest are identical, so you can upload just those two files if you prefer.
+Only `index.html` and `sw.js` changed from v2. The icons and manifest are identical, so you can upload just those two files if you prefer.
 
 ## First-time setup
 
@@ -29,4 +29,4 @@ Only `index.html` and `sw.js` changed from v1. The icons and manifest are identi
 
 - The icon is a placeholder, not Kraken's logo.
 - It loads fonts from Google Fonts, so the first open needs a connection. After that it works offline.
-- The service worker cache name changed to `kraken-social-v2`, so returning visitors get the new version on their next load.
+- The service worker cache name is now `kraken-social-v3`, and the service worker now asks the server for fresh files on every load, so future updates show up on the next reload without clearing site data.

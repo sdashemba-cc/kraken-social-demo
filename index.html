@@ -166,14 +166,18 @@ textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .sharecard{border-radius:14px;padding:12px;background:linear-gradient(135deg,var(--accent-soft),var(--surface2));display:flex;flex-direction:column;gap:2px}
 .menu{border:0;background:none;color:var(--muted);font-size:18px;line-height:1;padding:2px 6px;border-radius:8px}
 .legend{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stars{color:#c98a00;letter-spacing:1px;font-size:12px;white-space:nowrap}
+@media(prefers-color-scheme:dark){.stars{color:#f0b429}}
+input[type=text]{font:inherit;min-width:0;flex:1;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 12px}
+.bubble .acts{margin-top:4px}
 
 </style>
 </head>
 <body>
 <main class="wrap">
   <header>
-    <h1>Kraken Social Prototype <span class="pill acc" style="vertical-align:middle">v2</span></h1>
-    <p class="lede">Start at the end state, then step the stage down to see what ships first, or take the ten-step tour. Everything in the phone is clickable. Names, prices and counts are made up for illustration; nothing here places a real order.</p>
+    <h1>Kraken Social Prototype <span class="pill acc" style="vertical-align:middle">v3</span></h1>
+    <p class="lede">Start at the end state, then step the stage down to see what ships first, or take the guided tour. Version 3 adds messaging, polls, notifications, goals, the Academy and expertise stars. Everything in the phone is clickable. Names, prices and counts are made up for illustration; nothing here places a real order.</p>
   </header>
   <div class="stagebar" role="group" aria-label="Prototype stage">
     <span class="lab">Stage</span>
@@ -224,14 +228,16 @@ var LOCKMSG={circle:['Squads','Private groups with trade cards, polls, quests an
 var NAMES={home:'Home',feed:'Feed',circle:'Squads',moments:'Moments',trader:'Traders',you:'You'};
 var TOUR=[
  {s:1,t:'home',c:'Stage 1 is one bet. Place the trade and the share sheet appears (E2). It defaults to Only me, and Close friends (P2) is the lowest-exposure way to share.'},
- {s:1,t:'feed',c:'Posts carry Kraken-verified positions (E1/P3). Report, block and mute are in from day one (P8). Unverified claims are labeled.'},
- {s:1,t:'you',c:'Every person gets a private profile by default (P1). Nothing is public until they choose it.'},
- {s:2,t:'circle',c:'Squads (E5/P5) are the first growth loop: trade cards with a prefilled Trade this, polls, invites by Kraktag or link. Items marked Experiment are small tests with no outside evidence yet.'},
- {s:2,t:'you',c:'The referral reward pays only after the friend funds and stays 30 days (R1). Weekly streaks and badges reward consistency, not trading.'},
- {s:2,t:'trader',c:'Follow verified traders and make a Call with a horizon (P9, experiment). Calls build a track record that later feeds leaderboards.'},
+ {s:1,t:'feed',c:'Posts carry Kraken-verified positions (E1/P3). Report, block and mute are in from day one (P8). New in v3: Show less like this in the ⋯ menu, and a caught-up marker where the feed ends (V3-15, V3-07).'},
+ {s:1,t:'you',c:'Every person gets a private profile by default (P1). Interests and dislikes live here and stay private (V3-07).'},
+ {s:2,t:'circle',c:'Squads (E5/P5) are the first growth loop. New in v3: polls with deadlines and an anonymous option (V3-04), chat reactions, pins, $ASSET links (V3-02, V3-11) and a chat safety kit (V3-17). Try the muted word and the restricted member.'},
+ {s:2,t:'home',c:'New in v3: Alerts opens a notification center with one daily budget and a Sunday digest (V3-16, V3-05). The Academy teaches the basics for small learning rewards (V3-25), and Goals reward saving and learning, never trading (V3-20).'},
+ {s:2,t:'you',c:'The referral reward pays only after the friend funds and stays 30 days (R1). New in v3: saved collections (V3-10), a status note (V3-08) and quiet mode (V3-21), which hides the social tabs.'},
+ {s:2,t:'trader',c:'Follow verified traders and make a Call with a horizon (P9, experiment). Calls build a track record that later feeds leaderboards and stars.'},
  {s:3,t:'moments',c:'Event rooms open to people without an account (E4/A5). Free pick’em (G5) is a small test of whether games pull in viewers.'},
- {s:3,t:'trader',c:'Public trader pages (A3/S4), an opt-in risk-adjusted leaderboard (E7/P7) and seasons (G3, experiment) arrive once the graph exists.'},
- {s:4,t:'trader',c:'Capped copy trading with a stop rule (M2/M3) and Social Pro (M4) come only after the stage 3 gate and a legal review.'},
+ {s:3,t:'trader',c:'Public trader pages (A3/S4), an opt-in leaderboard (E7/P7), and new in v3 a pinned track record that always shows the full record beside it (V3-09).'},
+ {s:3,t:'feed',c:'New in v3: Forums (V3-24, experiment). Answers carry expertise stars (V3-23) earned from classes, helpful answers and Calls. Friends-only messages with a request inbox live in Squads (V3-01).'},
+ {s:4,t:'trader',c:'Capped copy trading with a stop rule (M2/M3) comes only after the stage 3 gate and a legal review. Social Pro (M4, V3-22) unlocks extras but never safety, learning or stars.'},
  {s:5,t:'circle',c:'Money in chat (M7/S6): split and request with friends. At 100M, retention and payments carry the funnel.'}
 ];
 var POSTS=[
@@ -240,10 +246,11 @@ var POSTS=[
  {id:'sam',name:'Sam T.',v:false,ago:'3h',asset:'SOL',dir:'Long',entry:'—',pl:'—',text:'SOL is going to double, trust me.',tags:['Solana']}
 ];
 var S={stage:5,tab:'home',feedTab:'for',interests:[],aud:'me',fld:{asset:true,entry:true,size:false},tag:null,note:'',sheet:null,orderId:null,
- mine:[],followed:{maya:true},mv:{},react:{},vote:null,votes:[7,4,3],chat:[['Dev','Watching BTC into the close.'],['Maya','Poll is up. Vote before Friday.']],
+ mine:[],followed:{maya:true},mv:{},react:{},vote:null,votes:[7,4,3],chat:[['Dev','Watching BTC into the close.','c1'],['Maya','Poll is up. Vote before Friday. @Dev thoughts on $BTC?','c2'],['Sam','Join my signals group http://signals.example free money','c3']],
  bull:58,alert:false,copy:{alloc:500,cap:10,stop:15},trading:false,toast:null,sent:false,t:null,
  hidden:{},rep:null,mark:false,quizDone:false,calls:[],cdraft:{a:'ETH',d:'Up',h:'1 month',th:''},invited:false,vis:'private',optin:false,pick:null,practice:false,
  offline:false,away:true,joined:false,recapShared:false,tour:null,openAsset:'ETH'};
+Object.assign(S,V3STATE());
 var $=function(i){return document.getElementById(i)};
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
 var IC={
@@ -257,7 +264,7 @@ var IC={
 };
 var svg=function(k,c){return '<svg viewBox="0 0 24 24" '+(c?'class="'+c+'" ':'')+'aria-hidden="true">'+IC[k]+'</svg>'};
 var CHK='<svg class="chk" viewBox="0 0 24 24" aria-label="Verified by Kraken" role="img"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-function exp(code){return FEAT[code]&&FEAT[code][3]===2?' <span class="pill warn">Experiment</span>':''}
+function exp(code){var _f=FEAT[code]||V3FEAT[code];return _f&&_f[3]===2?' <span class="pill warn">Experiment</span>':''}
 function sheetOpen(name){S.sheet=name;S.toast=null;renderToast();renderLayer()}
 
 function locked(tab){var m=LOCKMSG[tab];return '<div class="card locked">'+svg('lock')+'<div class="title" style="font-size:18px">'+m[0]+' unlock in stage '+LOCK[tab]+'</div><div class="sub" style="max-width:30ch">'+m[1]+'</div><button class="btn sm" data-act="stage" data-v="'+LOCK[tab]+'">Jump to stage '+LOCK[tab]+'</button></div>'}
@@ -296,7 +303,7 @@ function callCard(c,mine){
 
 function home(){
   var pts=[40,44,41,48,52,50,57,55,63,61,68,72],mx=72,mn=40,d=pts.map(function(v,i){return (i?'L':'M')+(i*(300/11)).toFixed(1)+' '+(56-(v-mn)/(mx-mn)*50).toFixed(1)}).join('');
-  var h='<div class="row between"><div class="title">Portfolio</div><span class="pill">Illustrative data</span></div>';
+  var bc=bellCount(),h='<div class="row between"><div class="title">Portfolio</div><div class="acts">'+(S.stage>=2?'<button class="chip" data-act="bell" aria-label="Notifications, '+bc+' new">Alerts'+(bc?' <b class="num">'+bc+'</b>':'')+'</button>':'')+'<span class="pill">Illustrative data</span></div></div>';
   if(S.stage>=3&&S.away)h+='<div class="card soft"><div class="row"><div class="grow"><strong>Your squad finished its quest while you were away</strong><div class="sub">One nudge a month, from friends only. Your weekly streak is still alive.</div></div><div class="acts"><button class="btn sm pri" data-act="winback">Rejoin</button><button class="btn sm" data-act="awayoff">Dismiss</button></div></div></div>';
   h+='<div class="card"><div class="sub">Total value</div><div class="big num">$12,480.22</div><div class="sub up">+$318.40 today</div>'+
   '<svg viewBox="0 0 300 62" width="100%" height="62" role="img" aria-label="Portfolio value trending up over twelve days"><path d="'+d+'" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'+
@@ -306,6 +313,7 @@ function home(){
   [['BTC','0.082','$5,264','up','+2.1%'],['ETH','1.40','$3,437','up','+4.2%'],['SOL','21.0','$1,820','dn','−0.8%']].forEach(function(r){
     h+='<div class="row between"><div><strong>'+r[0]+'</strong> <span class="sub">'+r[1]+'</span></div><div class="num">'+r[2]+' <span class="'+r[3]+'">'+r[4]+'</span></div></div>'});
   h+='</div>';
+  h+=homeV3();
   if(S.stage>=2)h+='<div class="card soft"><div class="row"><div class="grow"><strong>Invite a friend</strong><div class="sub">By Kraktag, link or QR. The reward pays after their first funded trade and 30 active days.</div></div><button class="btn sm" data-act="invite">Invite</button></div></div>';
   return h}
 
@@ -319,9 +327,11 @@ function feed(){
     h+='<div class="card soft"><div class="sub">Pick interests so the feed is useful before you follow anyone</div><div class="acts">'+ints.map(function(t){return '<button class="chip" aria-pressed="'+(S.interests.indexOf(t)>-1)+'" data-act="interest" data-v="'+t+'">'+t+'</button>'}).join('')+'</div></div>';
     S.mine.forEach(function(m,i){h+=minePost(m,i)});
     if(S.stage>=2){S.calls.forEach(function(c){h+=callCard(c,true)});h+=callCard({a:'ETH',d:'Up',h:'1 month',th:'Spot demand is holding while funding stays flat.'},false)}
-    var list=POSTS.filter(function(p){return !S.hidden[p.id]&&(!S.interests.length||p.tags.some(function(t){return S.interests.indexOf(t)>-1}))});
+    var list=POSTS.filter(function(p){return !S.hidden[p.id]&&!p.tags.some(function(t){return S.dislikes.indexOf(t)>-1})&&(!S.interests.length||p.tags.some(function(t){return S.interests.indexOf(t)>-1}))});
     if(!list.length)h+='<div class="card empty"><strong>Nothing here yet</strong><div class="sub">No verified posts match those interests today. Try another topic or check Moments.</div></div>';
     list.forEach(function(p){h+=post(p)});
+    h+='<div class="card empty"><strong>You’re all caught up</strong><div class="sub">That’s everything new from the last day. No endless scroll, so come back when you like.</div>'+(S.stage>=2?'<div style="margin-top:8px"><button class="btn sm" data-act="academy">Open the Academy</button></div>':'')+'</div>';
+    if(S.stage>=3)h+='<div class="card soft"><div class="row between"><div><strong>Ask the community</strong><div class="sub">Forums by topic, answered by high-star helpers.'+exp('V3-24')+'</div></div><button class="btn sm pri" data-act="forum">Open forums</button></div></div>';
     if(S.stage>=2)h+='<div class="card soft"><span class="pill acc">Learn</span> <strong>What is a stop order?</strong><div class="sub">A stop sells automatically if price falls to a level you pick. Finish the quiz to earn up to $2 in crypto, capped at 3 rewards a month.</div><div style="margin-top:6px"><button class="btn sm pri" data-act="quiz"'+(S.quizDone?' disabled':'')+'>'+(S.quizDone?'Reward earned':'Start 2 minute lesson')+'</button></div></div>';
     else h+='<div class="sub" style="text-align:center"><button class="chip" data-act="offline">Prototype control: simulate no connection</button></div>';
   }else{
@@ -346,11 +356,10 @@ function circle(){
   h+='<div class="card"><div class="row between"><strong>Practice mode</strong>'+exp('G4')+'</div><div class="sub">Friends who have not funded yet can join with a paper portfolio and play along, clearly labeled practice.</div>'+
    '<div class="row between"><span class="num">'+(S.practice?'Paper portfolio +$312 (practice)':'Not joined')+'</span><button class="chip" aria-pressed="'+S.practice+'" data-act="practice">'+(S.practice?'Joined':'Join as practice')+'</button></div></div>';
   h+='<div class="card"><strong>BTC this week: hold, trim or add?</strong>'+opts.map(function(o,i){var w=Math.round(S.votes[i]/tot*100);return '<button class="opt" data-act="vote" data-v="'+i+'"><div class="fill" style="width:'+w+'%"></div><span class="row between"><span>'+o+(S.vote===i?' (your vote)':'')+'</span><span class="num">'+w+'%</span></span></button>'}).join('')+'<div class="sub">Votes show choices only. Sizes stay hidden.</div></div>';
+  h+=pollsV3();
   if(S.stage>=4)h+='<div class="card"><div class="row between"><strong>Squad goal: $2,000 in Earn</strong><span class="num">$1,340</span></div><div class="bar"><i class="g" style="width:67%"></i></div><div class="sub">Goals reward saving together, not trading more. At $2,000 the squad unlocks a lower fee tier (illustrative). Squad fee tier trades some fee revenue for balances.</div></div>';
   if(S.stage>=5)h+='<div class="card"><div class="row"><div class="grow"><strong>Split brunch</strong><div class="sub">Dev paid $48. Your share is $12.</div></div><button class="btn sm pri" data-act="pay"'+(S.sent?' disabled':'')+'>'+(S.sent?'Sent':'Send $12')+'</button></div></div>';
-  h+='<div class="card" style="gap:6px">'+S.chat.map(function(m){return '<div class="bubble'+(m[0]==='You'?' me':'')+'"><div class="who">'+esc(m[0])+'</div>'+esc(m[1])+'</div>'}).join('')+
-   '<div class="bubble"><div class="who">Dev '+CHK+'</div>Closed half my BTC hedge.<div class="tradecard"><div class="grow"><strong>BTC Hedge</strong><div class="sub">Entry 64,200 · size hidden</div></div><button class="btn sm pri" data-act="order" data-id="dev">Trade this</button></div><div class="sub">Opens your own order ticket to review. It does not copy Dev.</div></div>'+
-   '<form class="row" data-form="chat" style="margin-top:6px"><input id="chatIn" type="text" placeholder="Message the squad" aria-label="Message the squad" autocomplete="off"><button class="btn sm pri" type="submit">Send</button></form></div>';
+  h+=chatV3();
   return h}
 
 function moments(){
@@ -382,6 +391,7 @@ function trader(){
    (S.stage>=3?'<div class="acts"><button class="btn sm" data-act="toast" data-v="Public link copied (illustrative)">Share public page</button><button class="btn sm" data-act="toast" data-v="Share card ready for X (illustrative)">Share to X</button></div>':'')+'</div>';
   if(S.stage>=2)h+='<div class="card"><div class="row between"><strong>Calls</strong>'+exp('P9')+'</div><div class="sub">A Call is a direction and a horizon that resolves on its own. It builds a track record without sharing balances.</div>'+(S.calls.length?'<div class="sub">You have '+qty(S.calls.length)+' open.</div>':'')+'<button class="btn pri" data-act="call">Make a Call</button></div>';
   if(S.stage>=3){
+    h+=pinV3();
     h+='<div class="card"><div class="row between"><strong>Leaderboard</strong><span class="pill">Refreshed daily</span></div><div class="sub">Opt-in. Ranked on risk-adjusted return and Call accuracy, not raw profit.</div>'+
      [['1','Maya R.','1.8x'],['2','@quietfox','1.6x'],['3','Dev K.','1.4x']].map(function(r){return '<div class="row between"><span>'+r[0]+'. '+r[1]+'</span><span class="num">'+r[2]+'</span></div>'}).join('')+
      (S.optin?'<div class="row between"><span><strong>9. @you (anonymous handle)</strong></span><span class="num">0.9x</span></div>':'')+
@@ -395,7 +405,7 @@ function trader(){
      '<label class="sub" for="st">Stop copying if down: <b class="num">'+S.copy.stop+'%</b></label><input id="st" type="range" min="5" max="30" step="5" value="'+S.copy.stop+'" data-range="stop">'+
      '<div class="sub">Copy trading can lose money, and past results do not predict future ones. Kraken pays creators a share of fees; followers pay no extra.</div>'+
      '<button class="btn pri" data-act="toast" data-v="Copy settings saved as a preview (illustrative, nothing was placed)">Start copying</button></div>'+
-     '<div class="card soft row"><div class="grow"><strong>Social Pro</strong><div class="sub">Deeper trader analytics, more lists, advanced alerts.</div></div><span class="pill acc">$4.99 / mo</span></div>';
+     '<div class="card soft row"><div class="grow"><strong>Social Pro'+(S.pro?' · on':'')+'</strong><div class="sub">Deeper trader analytics, larger squads, per-asset price rules.</div></div><button class="btn sm" data-act="pro">'+(S.pro?'Manage':'$4.99 / mo')+'</button></div>';
   }else{
     h+='<div class="card soft"><strong>Copy trading comes later</strong><div class="sub">It carries the most legal and conduct risk, so it ships after trust is built (stage 4).</div></div>'}
   return h}
@@ -415,12 +425,255 @@ function you(){
      '<div class="sub">The reward is paid only after a friend funds and stays active 30 days, so farming does not pay.</div><div class="acts"><button class="btn sm" data-act="invite">Invite more</button></div></div>';
     if(S.quizDone)h+='<div class="card soft"><strong>Learn reward earned</strong><div class="sub">$2 in crypto, credited after your next funded trade this month.</div></div>'}
   if(S.stage>=3)h+='<div class="card"><div class="row between"><strong>Season recap</strong><span class="pill acc">Shareable</span></div><div class="sharecard"><strong>Season 1 recap</strong><div class="sub">4 Calls · 3 right · 2 Learn cards · 5 week squad streak</div></div><div class="sub">Shows learning and accuracy only. No balances or trade sizes.</div><button class="btn sm pri" data-act="recap"'+(S.recapShared?' disabled':'')+'>'+(S.recapShared?'Shared':'Share recap')+'</button></div>';
+  h+=youV3();
   h+='<div class="card soft"><strong>Community guidelines</strong><div class="sub">No harassment, no promised returns, no pasted referral spam. Posts that break them are blocked, and anyone can report or block from the ⋯ menu.</div></div>';
   return h}
+
+/* ===== v3 additions ===== */
+/* id, name, stage, tier (0 build first, 1 build next, 2 test small), wave, tab, clickable */
+var V3F=[
+['V3-15','Caught-up marker',1,0,1,'feed',1],['V3-07','Interests and dislikes',1,0,1,'you',1],['V3-17','Message safety kit',2,0,1,'circle',1],['V3-10','Saved collections',2,0,1,'you',1],['V3-21','Quiet mode',2,0,1,'you',1],
+['V3-06','Share from anywhere',2,0,2,'feed',1],['V3-04','Better polls',2,0,2,'circle',1],['V3-11','Cashtag links',2,0,2,'circle',1],['V3-16','Notification center',2,0,2,'home',1],['V3-05','Notification rules and budget',2,1,2,'home',1],['V3-02','Richer group chat',2,1,2,'circle',1],['V3-25','Academy',2,0,2,'home',1],
+['V3-20','Goals and milestones',2,1,3,'home',1],['V3-23','Expertise stars',3,1,3,'you',1],['V3-09','Pinned track record',3,1,3,'trader',1],['V3-08','Status note',2,1,3,'you',1],
+['V3-22','Social Pro subscription',4,1,4,'you',1],['V3-13','Friends in common',3,1,4,'home',0],['V3-01','Direct messages, friends only',3,2,4,'circle',1],['V3-12','Squad huddle',3,2,4,'moments',0],['V3-03','Idea board with votes',2,2,4,'circle',0],['V3-24','Forums',3,2,4,'feed',1],
+['V3-14','Explore by interest',3,2,5,'feed',0],['V3-18','Broadcast channel',3,2,5,'trader',0],['V3-19','Shared research board',3,2,5,'circle',0]];
+var V3FEAT={};V3F.forEach(function(f){V3FEAT[f[0]]=f});
+function V3STATE(){return {quiet:false,dislikes:[],col:{'To research':[],'Watching':[]},saveItem:null,
+ notif:{budget:3,rules:{friend:true,poll:true,price:true,call:true,quest:true,reward:true},qh:true,digest:true,tab:'inbox',seen:false},
+ polls:[],pd:{tpl:0,dl:'3 days',multi:false,anon:false},pvote:{},
+ mr:{},pin:null,muteWords:['free money'],restricted:{},linkwarn:true,shown:{},
+ cls:[],goals:[],helpful:[],fb:'Getting started',asked:[],
+ pro:false,pinCall:false,status:'',dm:{tab:'inbox',thread:false,req:true,msgs:[['Dev','Did you see the poll?']]},sendId:null,f:{}}}
+var RB={c1:2,c2:1,c3:0};
+var STARS={Dev:3,Maya:5,Sam:1};
+function starN(){return Math.min(5,1+Math.min(2,Math.floor(S.cls.length/2))+(S.helpful.length>=1?1:0)+(S.helpful.length>=3?1:0)+1)}
+function stars(n){return '<span class="stars" role="img" aria-label="'+n+' of 5 stars">'+new Array(n+1).join('★')+new Array(6-n).join('☆')+'</span>'}
+function fmt(t){
+ var s=esc(t);
+ s=s.replace(/\$([A-Z]{2,5})\b/g,function(m,a){return '<button class="chip" style="padding:0 7px" data-act="asset" data-v="'+a+'">$'+a+'</button>'});
+ s=s.replace(/@([A-Za-z]+)/g,'<span class="pill acc">@$1</span>');
+ s=s.replace(/https?:\/\/\S+/g,function(m){return S.linkwarn?'<span class="pill warn">Link not opened: from outside your squad</span>':m});
+ return s}
+var CLS=[['What an exchange is',4],['How to buy your first coin',5],['Fees, spreads and slippage',5],['Keeping your account safe',6],['Risk and position size',6]];
+var GT=[['invest','First $100 invested','Saving',100,'$3','$'],['weekly','12-week recurring buy','Saving',12,'$5','weeks'],['path','Finish the Starter path','Learning',5,'$5','classes'],['friends','Bring 3 friends who fund','Referrals',3,'Flat referral reward','friends']];
+var FORUM={'Getting started':{q:'How much should I start with?',a:[['Maya R.',5,'Start with an amount where a 30% drop would not change your week, then set a small recurring buy.','a1',1],['@newbie42',1,'Everyone says $100, so I did that.','a2',0]]},
+ 'Security':{q:'Do I need a hardware wallet?',a:[['Dev K.',3,'Turn on two-factor first. A hardware wallet matters once your holdings are larger than a month of savings.','a3',1],['@sol_sam',1,'Just keep it on your phone.','a4',0]]},
+ 'Taxes':{q:'Do I owe tax when I swap one coin for another?',a:[['Maya R.',5,'In many places yes, a swap counts as a sale. Check your local rules and keep your export.','a5',1]]},
+ 'ETH':{q:'Why did ETH move after the Fed?',a:[['Dev K.',3,'Rates feed through to risk assets. This is my view, not advice.','a6',0]]}};
+function notifList(){
+ var r=S.notif.rules,a=[];
+ if(r.friend)a.push({t:'Dev closed half his BTC hedge',g:'Weekend Stackers',p:3});
+ if(r.poll)a.push({t:'Your squad poll closes tomorrow',g:'Weekend Stackers',p:2});
+ if(r.price)a.push({t:'ETH crossed 2,500, a level you set',g:'Price rules',p:4});
+ if(r.call)a.push({t:'Maya’s Call resolves in 9 days',g:'Calls',p:1});
+ if(r.quest)a.push({t:'Weekly quest: 2 of 3 done',g:'Weekend Stackers',p:2});
+ if(r.reward&&(S.quizDone||S.cls.length))a.push({t:'Learning reward added to your account',g:'Rewards',p:5});
+ a.sort(function(x,y){return y.p-x.p});
+ return a.map(function(x,i){x.sent=!S.quiet&&i<S.notif.budget;return x})}
+function bellCount(){return S.notif.seen||S.quiet?0:notifList().filter(function(x){return x.sent}).length}
+function checkGoals(){S.goals.forEach(function(g){if(g.k==='path')g.p=S.cls.length;if(!g.done&&g.p>=g.t){g.done=true;toast('Goal reached: '+g.name+'. Reward '+g.rew+' (illustrative), inside the reward cap.')}})}
+function homeV3(){
+ var h='';if(S.stage<2)return h;
+ var n=S.cls.length;
+ h+='<div class="card"><div class="row between"><div><strong>Academy</strong><div class="sub">Starter path · '+n+' of 5 classes</div></div><button class="btn sm pri" data-act="academy">'+(n>=5?'Review':n?'Continue':'Start')+'</button></div><div class="bar" role="img" aria-label="'+n+' of 5 classes done"><i class="g" style="width:'+n*20+'%"></i></div><div class="sub">'+(n>=5?'Starter path complete.':'Short classes with a quiz. Rewards are for learning, never for trading.')+'</div></div>';
+ h+='<div class="card"><div class="row between"><strong>Goals</strong><button class="btn sm" data-act="newgoal">Set a goal</button></div>';
+ if(!S.goals.length)h+='<div class="sub">Pick a goal such as a first $100 invested or finishing the Starter path. Goals are private unless you share one with your squad.</div>';
+ S.goals.forEach(function(g,i){var u=g.u==='$'?'$'+g.p+' of $'+g.t:g.p+' of '+g.t+' '+g.u;
+  h+='<div class="card soft"><div class="row between"><strong>'+g.name+'</strong><span class="pill '+(g.done?'good':'')+'">'+(g.done?'Reached · '+g.rew:g.cat)+'</span></div><div class="bar"><i class="g" style="width:'+Math.min(100,Math.round(g.p/g.t*100))+'%"></i></div><div class="row between"><span class="sub">'+u+'</span><span class="acts">'+(g.k!=='path'&&!g.done?'<button class="chip" data-act="goalprog" data-i="'+i+'">Add progress (demo)</button>':'')+'<button class="chip" aria-pressed="'+g.shared+'" data-act="goalshare" data-i="'+i+'">'+(g.shared?'Shared with squad':'Private')+'</button></span></div></div>'});
+ h+='<div class="sub">Rewards go to saving, learning and referrals, never to trading volume.</div></div>';
+ return h}
+function pollsV3(){
+ var h='<div class="row between"><strong>More polls</strong><button class="btn sm" data-act="newpoll">New poll</button></div>';
+ if(!S.polls.length)h+='<div class="sub">Add a poll with a deadline, multiple choice or anonymous votes.</div>';
+ S.polls.forEach(function(p,pi){var voted=p.v.length>0,base=[5,3,2,1,1],tot=0,cn=p.o.map(function(o,i){var c=base[i]+(p.v.indexOf(i)>-1?1:0);tot+=c;return c});
+  h+='<div class="card"><strong>'+esc(p.q)+'</strong><div class="sub">Closes in '+p.dl+' · '+(p.multi?'pick any':'pick one')+(p.anon?' · anonymous':'')+'</div>'+
+  p.o.map(function(o,i){var w=voted?Math.round(cn[i]/tot*100):0;return '<button class="opt" data-act="pv" data-p="'+pi+'" data-v="'+i+'"><div class="fill" style="width:'+w+'%"></div><span class="row between"><span>'+esc(o)+(p.v.indexOf(i)>-1?' (your vote)':'')+'</span><span class="num">'+(voted?w+'%':'')+'</span></span></button>'}).join('')+
+  '<div class="sub">'+(voted?'Votes show choices only. Sizes stay hidden.':'Results appear after you vote, so the tally does not sway you.')+'</div><div class="acts"><button class="btn sm" data-act="toast" data-v="Result card ready to share (illustrative, no balances shown)">Share result</button></div></div>'});
+ return h}
+function chatV3(){
+ var h='<div class="card" style="gap:6px">';
+ if(S.pin){var pm=S.chat.filter(function(m){return m[2]===S.pin})[0];if(pm)h+='<div class="card soft"><div class="sub">Pinned by you</div>'+fmt(pm[1])+'</div>'}
+ S.chat.forEach(function(m){var who=m[0],id=m[2],mine=who==='You';
+  var muted=S.muteWords.some(function(w){return w&&m[1].toLowerCase().indexOf(w.toLowerCase())>-1});
+  if(!mine&&S.restricted[who]&&!S.shown[id]){h+='<div class="bubble"><div class="sub">Message from '+esc(who)+' is hidden because you restricted them. <button class="chip" data-act="showmsg" data-id="'+id+'">Show</button></div></div>';return}
+  if(!mine&&muted){h+='<div class="bubble"><div class="sub">Hidden by your muted words.</div></div>';return}
+  var cnt=(RB[id]||0)+(S.mr[id]?1:0);
+  h+='<div class="bubble'+(mine?' me':'')+'"><div class="who">'+esc(who)+(who==='Dev'||who==='Maya'?' '+CHK:'')+(S.stage>=3&&STARS[who]?' '+stars(STARS[who]):'')+'</div>'+fmt(m[1])+
+   '<div class="acts"><button class="chip" aria-pressed="'+!!S.mr[id]+'" data-act="mreact" data-id="'+id+'">+1 '+cnt+'</button><button class="chip" aria-pressed="'+(S.pin===id)+'" data-act="mpin" data-id="'+id+'">'+(S.pin===id?'Unpin':'Pin')+'</button>'+(mine?'':'<button class="chip" data-act="mreport" data-id="'+id+'">Report</button>')+'</div></div>'});
+ h+='<div class="bubble"><div class="who">Dev '+CHK+'</div>Closed half my BTC hedge. $BTC<div class="tradecard"><div class="grow"><strong>BTC Hedge</strong><div class="sub">Entry 64,200 · size hidden</div></div><button class="btn sm pri" data-act="order" data-id="dev">Trade this</button></div><div class="sub">Opens your own order ticket to review. It does not copy Dev.</div></div>';
+ h+='<form class="row" data-form="chat" style="margin-top:6px"><input id="chatIn" type="text" placeholder="Message the squad. Try @Maya or $ETH" aria-label="Message the squad" autocomplete="off"><button class="btn sm" type="button" data-act="toast" data-v="Photo attached (illustrative)">Photo</button><button class="btn sm pri" type="submit">Send</button></form></div>';
+ h+='<div class="card"><div class="row between"><strong>Chat safety</strong><span class="pill acc">Yours only</span></div>'+
+  '<div class="row between"><span class="sub">Warn on links from outside your squad</span><button class="chip" aria-pressed="'+S.linkwarn+'" data-act="linkwarn">'+(S.linkwarn?'On':'Off')+'</button></div>'+
+  '<div class="row between"><span class="sub">Restrict Sam T. (hides messages until you tap)</span><button class="chip" aria-pressed="'+!!S.restricted.Sam+'" data-act="restrict" data-v="Sam">'+(S.restricted.Sam?'Restricted':'Restrict')+'</button></div>'+
+  '<div class="sub">Muted words</div><div class="acts">'+S.muteWords.map(function(w,i){return '<button class="chip" data-act="rmmute" data-i="'+i+'">'+esc(w)+' ×</button>'}).join('')+'</div>'+
+  '<div class="row"><input type="text" data-f="mw" id="mwIn" placeholder="Add a word or phrase" aria-label="Add muted word" value="'+esc(S.f.mw||'')+'"><button class="btn sm" data-act="addmute">Add</button></div></div>';
+ if(S.stage>=3)h+='<div class="card"><div class="row between"><div><strong>Messages</strong><div class="sub">Friends only. Requests from others wait in a separate inbox.'+exp('V3-01')+'</div></div><button class="btn sm pri" data-act="dm">Open'+(S.dm.req?' · 1 request':'')+'</button></div></div>';
+ return h}
+function pinV3(){
+ return '<div class="card"><div class="row between"><strong>Pinned track record</strong><span class="pill">Full record always shown</span></div>'+
+  '<div class="sub">Maya pins: ETH Up, 1 month, right. Beside it: 7 resolved, 5 right (71%).</div>'+
+  (S.pinCall?'<div class="card soft"><strong>Your pin: ETH Up, 1 month, right</strong><div class="sub">Beside it: 4 resolved, 3 right (75%). A pin cannot hide the rest of your record.</div></div>':'')+
+  '<button class="btn sm" data-act="pincall">'+(S.pinCall?'Unpin my best Call':'Pin my best Call')+'</button></div>'}
+function youV3(){
+ var ints=['Bitcoin','Ethereum','Solana','Earnings','Macro'],h='';
+ h+='<div class="card"><div class="row between"><strong>Interests and dislikes</strong><span class="pill">Private</span></div><div class="sub">Tap to like. Use “Show less like this” on any post to add a dislike. These only rank your feed and suggest squads, and never guess your finances.</div><div class="acts">'+ints.map(function(t){return '<button class="chip" aria-pressed="'+(S.interests.indexOf(t)>-1)+'" data-act="interest" data-v="'+t+'">'+t+'</button>'}).join('')+'</div>'+
+  '<div class="sub">Dislikes</div><div class="acts">'+(S.dislikes.length?S.dislikes.map(function(t){return '<button class="chip" data-act="rmdis" data-v="'+t+'">'+t+' ×</button>'}).join(''):'<span class="sub">None yet</span>')+'</div></div>';
+ if(S.stage>=2){
+  h+='<div class="card"><div class="row between"><strong>Status note</strong><span class="pill">Close friends and squad</span></div>'+(S.status?'<div class="card soft">“'+esc(S.status)+'” <span class="sub">expires in 24 hours</span></div>':'')+'<div class="row"><input type="text" id="stIn" data-f="st" maxlength="60" placeholder="One line, such as Watching ETH into the Fed" aria-label="Status note" value="'+esc(S.f.st||'')+'"><button class="btn sm pri" data-act="poststatus">Post</button></div></div>';
+  var tot=0;Object.keys(S.col).forEach(function(k){tot+=S.col[k].length});
+  h+='<div class="card"><div class="row between"><strong>Saved</strong><span class="pill">'+tot+' saved</span></div>'+Object.keys(S.col).map(function(k){return '<div class="row between"><span>'+k+'</span><span class="sub">'+(S.col[k].length?S.col[k].join(', '):'Empty')+'</span></div>'}).join('')+'<div class="sub">Private by default. Save from the ⋯ menu on a post or from a market page.</div></div>';
+  h+='<div class="card"><div class="row between"><div><strong>Quiet mode</strong><div class="sub">Hides the social tabs and mutes social alerts. Trading, balances and safety settings stay as they are.</div></div><button class="chip" aria-pressed="'+S.quiet+'" data-act="quiet">'+(S.quiet?'On':'Off')+'</button></div></div>'}
+ if(S.stage>=3){
+  var n=starN();
+  h+='<div class="card"><div class="row between"><strong>Your stars</strong>'+stars(n)+'</div><div class="pos"><div><div class="k">Classes</div><div class="v">'+S.cls.length+' of 5</div></div><div><div class="k">Helpful answers</div><div class="v">'+S.helpful.length+'</div></div><div><div class="k">Calls resolved</div><div class="v">7</div></div></div><div class="sub">Community reputation, not advice. Earned from learning, help and a verified Call record. They cannot be bought, and they fade if you go quiet.</div></div>'}
+ if(S.stage>=4)h+='<div class="card soft"><div class="row"><div class="grow"><strong>Social Pro'+(S.pro?' · on':'')+'</strong><div class="sub">Larger squads, poll analytics, per-asset price rules. Safety, learning and stars stay free.</div></div><button class="btn sm '+(S.pro?'':'pri')+'" data-act="pro">'+(S.pro?'Manage':'See plan')+'</button></div></div>';
+ return h}
+function quietCard(t){return '<div class="row between"><div class="title">'+NAMES[t]+'</div></div><div class="card empty"><strong>Quiet mode is on</strong><div class="sub">Social tabs are hidden and social alerts are muted. Trading, balances and safety settings are unchanged.</div><div style="margin-top:8px"><button class="btn sm pri" data-act="quiet">Turn off quiet mode</button></div></div>'}
+function v3Panel(){
+ var h='<section class="panel"><h2 style="font-size:18px">Version 3 additions by wave</h2><div class="note" style="margin-top:0">Released in waves, ordered by dependency first and score second. Each is placed in the stage where it first makes sense. The bottom bar stays at six tabs; everything new lives inside one.</div>';
+ [1,2,3,4,5].forEach(function(w){var fs=V3F.filter(function(f){return f[4]===w});
+  h+='<div class="grp"><h3>Wave '+w+'</h3><div class="feat">'+fs.map(function(f){var on=f[2]<=S.stage;return '<button class="'+(on?'on':'')+(f[2]===S.stage?' new':'')+'" data-act="goto" data-v="'+f[0]+'" aria-label="'+f[1]+', stage '+f[2]+(on?'':', not live yet')+(f[6]?'':', design only')+'"><b>'+f[0].slice(3)+'</b>'+f[1]+(on?'':' · s'+f[2])+(f[6]?'':' · design only')+'</button>'}).join('')+'</div></div>'});
+ return h+'<div class="note">Numbers match the v3 backlog tab. “Design only” ideas are scored but not clickable here.</div></section>'}
+
+var PTPL=[['Hold, trim or add?',['Hold','Trim','Add']],['Which asset next?',['BTC','ETH','SOL']],['Event outcome',['Cut','Hold','Raise']]];
+function v3Sheet(n,wrap){
+ var h=null;
+ if(n==='notifs'){
+  var N=S.notif,items=notifList(),t=N.tab,r=N.rules;
+  var labels={friend:'Friend trades',poll:'Polls closing',price:'Price levels',call:'Calls resolving',quest:'Quests due',reward:'Rewards'};
+  var tabs='<div class="seg"><button class="chip" aria-pressed="'+(t==='inbox')+'" data-act="ntab" data-v="inbox">Inbox</button><button class="chip" aria-pressed="'+(t==='rules')+'" data-act="ntab" data-v="rules">Rules and budget</button></div>';
+  var body='';
+  if(t==='inbox'){
+   var sent=items.filter(function(x){return x.sent}),held=items.filter(function(x){return !x.sent});
+   var groups={};sent.forEach(function(x){(groups[x.g]=groups[x.g]||[]).push(x)});
+   body+=S.quiet?'<div class="card soft"><div class="sub">Quiet mode is on, so social alerts are held. Turn it off in You.</div></div>':'';
+   body+=Object.keys(groups).map(function(g){return '<div class="sub" style="margin-top:4px">'+esc(g)+'</div>'+groups[g].map(function(x){return '<div class="card soft">'+esc(x.t)+'</div>'}).join('')}).join('')||(S.quiet?'':'<div class="card empty">Nothing new.</div>');
+   body+=held.length&&N.digest?'<div class="card"><strong>In your Sunday digest ('+held.length+')</strong><div class="sub">'+held.map(function(x){return esc(x.t)}).join(' · ')+'</div></div>':'';
+   body+='<div class="sub">Today: '+Math.min(sent.length,N.budget)+' of '+N.budget+' notifications used. One budget covers every type.</div>'}
+  else{
+   body+='<div class="row between"><div><strong>Daily budget</strong><div class="sub">The most notifications you will get in a day, across all types</div></div><div class="acts"><button class="chip" data-act="budget" data-v="-1" aria-label="Fewer">−</button><b class="num">'+N.budget+'</b><button class="chip" data-act="budget" data-v="1" aria-label="More">+</button></div></div>';
+   body+='<div class="sub">Tell me when</div><div class="acts">'+Object.keys(labels).map(function(k){return '<button class="chip" aria-pressed="'+r[k]+'" data-act="nrule" data-v="'+k+'">'+labels[k]+'</button>'}).join('')+'</div>';
+   body+='<div class="row between"><span>Quiet hours, 10pm to 7am</span><button class="chip" aria-pressed="'+N.qh+'" data-act="nqh">'+(N.qh?'On':'Off')+'</button></div>';
+   body+='<div class="row between"><span>Sunday digest instead of extra pings</span><button class="chip" aria-pressed="'+N.digest+'" data-act="ndig">'+(N.digest?'On':'Off')+'</button></div>';
+   body+='<div class="row between"><span>Per-asset price levels <span class="pill acc">Pro</span></span><button class="chip" aria-pressed="'+S.pro+'" '+(S.pro?'':'disabled style="opacity:.45"')+' data-act="toast" data-v="Per-asset levels saved (illustrative)">'+(S.pro?'Edit':'Pro only')+'</button></div>'}
+  h=wrap('Notifications','<div class="row between"><div class="title" style="font-size:19px">Notifications</div></div>'+tabs+body+'<button class="btn grow" data-act="close">Done</button>')}
+ else if(n==='academy'){
+  var c=S.cls.length;
+  h=wrap('Academy','<div><div class="title" style="font-size:19px">Starter path</div><div class="sub">Five short classes with a quiz each. Rewards are small, for learning only, and share a $10 monthly cap with Learn cards (assumption).</div></div>'+
+   '<div class="bar"><i class="g" style="width:'+c*20+'%"></i></div>'+
+   CLS.map(function(k,i){var d=S.cls.indexOf(i)>-1;return '<div class="row between"><div><strong>'+(i+1)+'. '+k[0]+'</strong><div class="sub">'+k[1]+' minutes</div></div>'+(d?'<span class="pill good">Done</span>':'<button class="btn sm pri" data-act="takecls" data-v="'+i+'">Take class</button>')+'</div>'}).join('')+
+   '<div class="card soft"><div class="sub">Ladder</div><div class="acts"><span class="pill '+(c>=2?'good':'')+'">2 classes: Learner badge</span><span class="pill '+(c>=3?'good':'')+'">3: $2 reward</span><span class="pill '+(c>=5?'good':'')+'">5: $5 and answer in Forums</span></div></div>'+
+   '<button class="btn grow" data-act="close">Done</button>')}
+ else if(n==='goal'){
+  h=wrap('Set a goal','<div><div class="title" style="font-size:19px">Set a goal</div><div class="sub">Goals reward saving, learning and referrals. None of them is about trading more.</div></div>'+
+   GT.map(function(g){var has=S.goals.some(function(x){return x.k===g[0]});return '<button class="opt" data-act="goalset" data-v="'+g[0]+'"'+(has?' disabled style="opacity:.5"':'')+'><span class="row between"><span><strong>'+g[1]+'</strong><div class="sub">'+g[2]+' · reward '+g[4]+'</div></span><span class="pill">'+(has?'Set':'Add')+'</span></span></button>'}).join('')+'<button class="btn grow" data-act="close">Close</button>')}
+ else if(n==='poll'){
+  var d=S.pd,tp=PTPL[d.tpl];
+  h=wrap('New poll','<div><div class="title" style="font-size:19px">New poll</div><div class="sub">Templates keep questions about choices, not advice.</div></div>'+
+   '<div class="acts">'+PTPL.map(function(p,i){return '<button class="chip" aria-pressed="'+(d.tpl===i)+'" data-act="ptpl" data-v="'+i+'">'+p[0]+'</button>'}).join('')+'</div>'+
+   '<div class="card soft"><strong>'+tp[0]+'</strong><div class="sub">'+tp[1].join(' · ')+'</div></div>'+
+   '<div class="sub">Closes in</div><div class="acts">'+['1 day','3 days','1 week'].map(function(x){return '<button class="chip" aria-pressed="'+(d.dl===x)+'" data-act="pdl" data-v="'+x+'">'+x+'</button>'}).join('')+'</div>'+
+   '<div class="row between"><span>Let people pick more than one</span><button class="chip" aria-pressed="'+d.multi+'" data-act="pmulti">'+(d.multi?'Yes':'No')+'</button></div>'+
+   '<div class="row between"><span>Anonymous votes</span><button class="chip" aria-pressed="'+d.anon+'" data-act="panon">'+(d.anon?'Yes':'No')+'</button></div>'+
+   '<div class="sub">A poll result is a squad opinion, not advice, and the tally stays hidden until you vote.</div>'+
+   '<div class="row"><button class="btn grow" data-act="close">Cancel</button><button class="btn pri grow" data-act="ppub">Post poll</button></div>')}
+ else if(n==='sendto'){
+  var p=POSTS.filter(function(x){return x.id===S.sendId})[0]||POSTS[0];
+  h=wrap('Share','<div><div class="title" style="font-size:19px">Share this post</div><div class="sub">Opens the exact item. Amounts stay hidden unless the original shows them.</div></div>'+
+   '<div class="sharecard"><strong>'+esc(p.name)+' · '+p.asset+' '+p.dir+'</strong><div class="sub">kraken.example/p/'+p.id+' · verified position, size hidden</div></div>'+
+   '<div class="acts"><button class="btn sm pri" data-act="sendgo" data-v="squad">Weekend Stackers</button>'+(S.stage>=3?'<button class="btn sm" data-act="sendgo" data-v="dm">Dev K. (message)</button>':'')+'<button class="btn sm" data-act="sendgo" data-v="out">Outside apps</button></div><button class="btn grow" data-act="close">Cancel</button>')}
+ else if(n==='save'){
+  h=wrap('Save','<div><div class="title" style="font-size:19px">Save to a collection</div><div class="sub">'+esc(S.saveItem||'')+'. Collections are private.</div></div>'+
+   Object.keys(S.col).map(function(k){return '<button class="opt" data-act="savego" data-v="'+k+'"><span class="row between"><span>'+k+'</span><span class="sub">'+S.col[k].length+' saved</span></span></button>'}).join('')+
+   '<div class="row"><input type="text" data-f="nc" placeholder="New collection name" aria-label="New collection" value="'+esc(S.f.nc||'')+'"><button class="btn sm" data-act="newcol">Create</button></div><button class="btn grow" data-act="close">Cancel</button>')}
+ else if(n==='pro'){
+  h=wrap('Social Pro','<div><div class="title" style="font-size:19px">Social Pro</div><div class="sub">Extras for people who use the social side a lot. $4.99 a month (illustrative).</div></div>'+
+   '<div class="card soft"><strong>Always free</strong><div class="sub">Reporting, blocking and the safety kit · Academy and Learn cards · stars and badges · squads up to 10 · polls · friends-only messages</div></div>'+
+   '<div class="card"><strong>With Pro</strong><div class="sub">Squads up to 50 · poll analytics · per-asset price rules · trader page with insights · early access to new features</div></div>'+
+   '<div class="sub">Stars are earned, never bought. A holdout test decides the price.</div>'+
+   '<div class="row"><button class="btn grow" data-act="close">Not now</button><button class="btn pri grow" data-act="propick">'+(S.pro?'Cancel Pro':'Try Pro')+'</button></div>')}
+ else if(n==='dm'){
+  var m=S.dm,body='';
+  if(m.thread){body='<div class="bubble"><div class="who">Dev '+CHK+'</div>Did you see the poll?</div>'+m.msgs.slice(1).map(function(x){return '<div class="bubble me"><div class="who">You</div>'+esc(x[1])+'</div>'}).join('')+'<div class="row"><input type="text" data-f="dm" placeholder="Message Dev" aria-label="Message Dev" value="'+esc(S.f.dm||'')+'"><button class="btn sm pri" data-act="dmsend">Send</button></div><button class="chip" data-act="dmtab" data-v="inbox">Back</button>'}
+  else{
+   body='<div class="seg"><button class="chip" aria-pressed="'+(m.tab==='inbox')+'" data-act="dmtab" data-v="inbox">Inbox</button><button class="chip" aria-pressed="'+(m.tab==='req')+'" data-act="dmtab" data-v="req">Requests'+(m.req?' (1)':'')+'</button></div>';
+   if(m.tab==='inbox')body+='<button class="opt" data-act="dmopen"><span class="row between"><span><strong>Dev K.</strong> '+CHK+'<div class="sub">Did you see the poll?</div></span><span class="sub">1m</span></span></button><div class="sub">Only friends and squad members can message you directly. Read receipts are off.</div>';
+   else body+=m.req?'<div class="card"><strong>@coinhawk</strong> <span class="pill warn">Not a friend</span><div class="sub">“Check my signals <span class="pill warn">Link blocked until you accept</span>”</div><div class="acts"><button class="btn sm pri" data-act="dmacc">Accept</button><button class="btn sm" data-act="dmdec">Decline</button><button class="btn sm" data-act="dmrep">Report</button></div></div>':'<div class="card empty">No requests.</div>'}
+  h=wrap('Messages','<div class="title" style="font-size:19px">Messages</div>'+body+'<button class="btn grow" data-act="close">Close</button>')}
+ else if(n==='forum'){
+  var boards=Object.keys(FORUM),b=FORUM[S.fb],can=S.cls.length>=2;
+  h=wrap('Forums','<div><div class="title" style="font-size:19px">Forums</div><div class="sub">Questions and answers by topic. Newcomer questions go to high-star helpers first.'+exp('V3-24')+'</div></div>'+
+   '<div class="acts">'+boards.map(function(k){return '<button class="chip" aria-pressed="'+(S.fb===k)+'" data-act="fboard" data-v="'+k+'">'+k+'</button>'}).join('')+'</div>'+
+   '<div class="card"><strong>'+b.q+'</strong>'+b.a.map(function(a){var hp=S.helpful.indexOf(a[3])>-1;return '<div class="bubble"><div class="who">'+esc(a[0])+' '+stars(a[1])+(a[4]?' <span class="pill good">Accepted</span>':'')+'</div>'+esc(a[2])+'<div class="acts"><button class="chip" aria-pressed="'+hp+'" data-act="fhelp" data-v="'+a[3]+'">'+(hp?'Marked helpful':'Mark helpful')+'</button></div></div>'}).join('')+
+   S.asked.filter(function(q){return q.b===S.fb}).map(function(q){return '<div class="bubble me"><div class="who">You asked</div>'+esc(q.t)+'<div class="sub">Sent to helpers with 4 or more stars</div></div>'}).join('')+'</div>'+
+   '<div class="row"><input type="text" data-f="fq" placeholder="Ask in '+S.fb+'" aria-label="Ask a question" value="'+esc(S.f.fq||'')+'"><button class="btn sm pri" data-act="fask">Ask</button></div>'+
+   '<div class="sub">'+(can?'You can post answers, since you earned the Learner badge. Answers are marked as opinion, not advice.':'Finish 2 Academy classes to post answers.')+'</div>'+
+   '<button class="btn grow" data-act="close">Close</button>')}
+ return h}
+function v3Click(a,el,v,id){
+ var i=+el.dataset.i;
+ switch(a){
+ case 'bell':S.notif.seen=true;sheetOpen('notifs');return true;
+ case 'ntab':S.notif.tab=v;renderLayer();return true;
+ case 'budget':S.notif.budget=Math.max(1,Math.min(6,S.notif.budget+(+v)));renderLayer();return true;
+ case 'nrule':S.notif.rules[v]=!S.notif.rules[v];renderLayer();return true;
+ case 'nqh':S.notif.qh=!S.notif.qh;renderLayer();return true;
+ case 'ndig':S.notif.digest=!S.notif.digest;renderLayer();return true;
+ case 'academy':sheetOpen('academy');return true;
+ case 'takecls':{if(S.cls.indexOf(+v)<0)S.cls.push(+v);var c=S.cls.length;checkGoals();renderLayer();renderScreen();toast(c===2?'Class done. Learner badge earned.':c===3?'Class done. $2 reward queued (illustrative).':c===5?'Starter path complete. $5 reward queued (illustrative).':'Class done: '+CLS[+v][0]+'. Quiz passed.');return true}
+ case 'newgoal':sheetOpen('goal');return true;
+ case 'goalset':{var g=GT.filter(function(x){return x[0]===v})[0];S.goals.push({k:g[0],name:g[1],cat:g[2],t:g[3],u:g[5],rew:g[4],p:g[0]==='path'?S.cls.length:0,shared:false,done:false});S.sheet=null;checkGoals();draw();toast('Goal set. You will get one nudge inside your notification budget.');return true}
+ case 'goalprog':{var g2=S.goals[i];g2.p=Math.min(g2.t,g2.p+(g2.k==='invest'?25:g2.k==='weekly'?3:1));checkGoals();renderScreen();return true}
+ case 'goalshare':{S.goals[i].shared=!S.goals[i].shared;renderScreen();toast(S.goals[i].shared?'Goal shared with Weekend Stackers':'Goal is private again');return true}
+ case 'newpoll':sheetOpen('poll');return true;
+ case 'ptpl':S.pd.tpl=+v;renderLayer();return true;
+ case 'pdl':S.pd.dl=v;renderLayer();return true;
+ case 'pmulti':S.pd.multi=!S.pd.multi;renderLayer();return true;
+ case 'panon':S.pd.anon=!S.pd.anon;renderLayer();return true;
+ case 'ppub':{var t=PTPL[S.pd.tpl];S.polls.unshift({q:t[0],o:t[1],dl:S.pd.dl,multi:S.pd.multi,anon:S.pd.anon,v:[]});S.sheet=null;draw();toast('Poll posted to Weekend Stackers');return true}
+ case 'pv':{var p=S.polls[+el.dataset.p],k=+v,ix=p.v.indexOf(k);if(ix>-1)p.v.splice(ix,1);else if(p.multi)p.v.push(k);else p.v=[k];renderScreen();return true}
+ case 'sendto':S.sendId=id;sheetOpen('sendto');return true;
+ case 'sendgo':{var pp=POSTS.filter(function(x){return x.id===S.sendId})[0]||POSTS[0];S.sheet=null;
+   if(v==='squad'){S.chat.push(['You','Shared '+pp.name+'’s $'+pp.asset+' post','u'+Date.now()]);draw();toast('Sent to Weekend Stackers')}
+   else if(v==='dm'){draw();toast('Sent to Dev K. as a message')}
+   else{draw();toast('Link copied for outside apps. It opens the exact post (illustrative).')}return true}
+ case 'savepost':{var sp=POSTS.filter(function(x){return x.id===id})[0]||POSTS[0];S.saveItem=sp.asset+' post by '+sp.name;sheetOpen('save');return true}
+ case 'bookmark':S.saveItem=S.openAsset+' market page';sheetOpen('save');return true;
+ case 'savego':{var nm=S.saveItem.split(' ')[0];if(S.col[v].indexOf(nm)<0)S.col[v].push(nm);S.sheet=null;draw();toast('Saved to '+v);return true}
+ case 'newcol':{var cn=(S.f.nc||'').trim();if(cn&&!S.col[cn]){S.col[cn]=[];S.f.nc='';renderLayer()}return true}
+ case 'less':{var sp2=POSTS.filter(function(x){return x.id===S.rep})[0]||POSTS[0];var tg=sp2.tags[0];if(S.dislikes.indexOf(tg)<0)S.dislikes.push(tg);S.sheet=null;draw();toast('Okay, fewer '+tg+' posts. Change it any time in You.',true,'less',tg);return true}
+ case 'rmdis':S.dislikes.splice(S.dislikes.indexOf(v),1);renderScreen();return true;
+ case 'mreact':S.mr[id]=!S.mr[id];renderScreen();return true;
+ case 'mpin':S.pin=S.pin===id?null:id;renderScreen();toast(S.pin?'Pinned to the top of the squad':'Unpinned');return true;
+ case 'mreport':renderScreen();toast('Reported to Kraken’s review team. You can also restrict them below.');return true;
+ case 'showmsg':S.shown[id]=true;renderScreen();return true;
+ case 'restrict':S.restricted[v]=!S.restricted[v];S.shown={};renderScreen();toast(S.restricted[v]?'Sam T. restricted. Messages are hidden until you tap.':'Restriction removed');return true;
+ case 'linkwarn':S.linkwarn=!S.linkwarn;renderScreen();return true;
+ case 'addmute':{var w=(S.f.mw||'').trim();if(w&&S.muteWords.indexOf(w)<0)S.muteWords.push(w);S.f.mw='';renderScreen();return true}
+ case 'rmmute':S.muteWords.splice(i,1);renderScreen();return true;
+ case 'dm':S.dm.thread=false;sheetOpen('dm');return true;
+ case 'dmtab':S.dm.tab=v;S.dm.thread=false;renderLayer();return true;
+ case 'dmopen':S.dm.thread=true;renderLayer();return true;
+ case 'dmacc':S.dm.req=false;S.dm.tab='inbox';renderLayer();renderScreen();toast('Accepted. Links from them stay blocked for 24 hours.');return true;
+ case 'dmdec':S.dm.req=false;renderLayer();renderScreen();toast('Declined. They are not told.');return true;
+ case 'dmrep':S.dm.req=false;renderLayer();renderScreen();toast('Reported and removed from your requests.');return true;
+ case 'dmsend':{var dt=(S.f.dm||'').trim();if(dt){S.dm.msgs.push(['You',dt]);S.f.dm='';renderLayer()}return true}
+ case 'forum':S.sheet='forum';sheetOpen('forum');return true;
+ case 'fboard':S.fb=v;renderLayer();return true;
+ case 'fhelp':{var hx=S.helpful.indexOf(v);if(hx>-1)S.helpful.splice(hx,1);else S.helpful.push(v);renderLayer();return true}
+ case 'fask':{var q=(S.f.fq||'').trim();if(q){S.asked.push({b:S.fb,t:q});S.f.fq='';renderLayer()}return true}
+ case 'quiet':S.quiet=!S.quiet;draw();toast(S.quiet?'Quiet mode on. Trading and balances are unchanged.':'Quiet mode off');return true;
+ case 'poststatus':{var s=(S.f.st||'').trim();if(s){S.status=s;S.f.st='';renderScreen();toast('Status posted for 24 hours')}return true}
+ case 'pro':sheetOpen('pro');return true;
+ case 'propick':S.pro=!S.pro;S.sheet=null;draw();toast(S.pro?'Social Pro on (illustrative, nothing was charged)':'Social Pro cancelled');return true;
+ case 'pincall':S.pinCall=!S.pinCall;renderScreen();return true;
+ }
+ return false}
 
 function renderScreen(){
   var t=S.tab,h;
   if(LOCK[t]>S.stage)h=locked(t);
+  else if(S.quiet&&S.stage>=2&&['feed','circle','moments','trader'].indexOf(t)>-1)h=quietCard(t);
   else h=({home:home,feed:feed,circle:circle,moments:moments,trader:trader,you:you})[t]();
   $('screen').innerHTML=h}
 
@@ -432,7 +685,7 @@ function renderSide(){
   if(S.tour!==null){
     var tt=TOUR[S.tour];
     h+='<section class="panel tour"><div class="tourbar"><strong>Guided tour · step '+(S.tour+1)+' of '+TOUR.length+'</strong><div class="steps">'+TOUR.map(function(x,i){return '<i class="'+(i<=S.tour?'on':'')+'"></i>'}).join('')+'</div></div><div>'+tt.c+'</div><div class="acts"><button class="btn sm" data-act="tour" data-v="prev"'+(S.tour===0?' disabled':'')+'>Back</button><button class="btn sm pri" data-act="tour" data-v="next">'+(S.tour===TOUR.length-1?'Finish':'Next')+'</button><button class="btn sm" data-act="tour" data-v="stop">Exit tour</button></div></section>'}
-  else h+='<section class="panel"><div class="row between"><div><strong>New here?</strong><div class="sub">A ten-step tour walks the phone through stages 1 to 5 and says why each feature arrives when it does.</div></div><button class="btn pri" data-act="tour" data-v="start">Start the tour</button></div></section>';
+  else h+='<section class="panel"><div class="row between"><div><strong>New here?</strong><div class="sub">A guided tour walks the phone through stages 1 to 5, including the version 3 additions, and says why each feature arrives when it does.</div></div><button class="btn pri" data-act="tour" data-v="start">Start the tour</button></div></section>';
   h+='<section class="panel"><span class="pill acc" style="align-self:flex-start">Stage '+st.n+' of 5</span><h2>'+st.name+'</h2><dl class="kv">'+
    '<dt>Population</dt><dd>'+st.range+', '+st.time+'</dd><dt>Question</dt><dd>'+st.learn+'</dd><dt>Gate to pass</dt><dd>'+st.gate+'</dd><dt>Main source</dt><dd>'+st.src+'</dd></dl></section>';
   h+='<section class="panel"><h2 style="font-size:18px">Funnel focus in this stage</h2><div class="funnel">'+FUNNEL.map(function(f,i){var r=st.roles[i];return '<div class="'+(r==='-'?'n':r)+'">'+f+'<b>'+ROLE[r]+'</b></div>'}).join('')+'</div><div class="note">'+st.why+' Acquisition runs in every stage; only its source changes.</div></section>';
@@ -444,7 +697,8 @@ function renderSide(){
     var all=FEATURES.filter(function(f){return f[3]===ti});
     return '<div class="grp"><h3><span class="tier t'+ti+'">'+TIERN[ti]+'</span> '+fs.length+' live of '+all.length+'</h3><div class="feat">'+all.sort(function(a,b){return a[2]-b[2]||a[4]-b[4]}).map(function(f){var on=f[2]<=S.stage;return '<button class="'+(on?'on':'')+(f[2]===S.stage?' new':'')+'" data-act="goto" data-v="'+f[0]+'" aria-label="'+f[1]+', stage '+f[2]+(on?'':', not live yet')+'"><b>'+f[0]+'</b>'+f[1]+(on?'':' · s'+f[2])+'</button>'}).join('')+'</div></div>'}).join('');
   h+='<section class="panel"><h2 style="font-size:18px">Ideas by priority</h2>'+groups+'<div class="note">Outlined = arrives in this stage. Tap any idea to see where it lives in the phone. Test small first means no outside evidence yet, so it ships as a small experiment.</div></section>';
-  h+='<section class="panel"><h2 style="font-size:18px">Rules built in from stage 1</h2><ul class="guard"><li>Audience defaults to Only me, and trade size is off by default.</li><li>Only Kraken-verified positions carry the check; other claims are labeled.</li><li>Every share can be undone, and any post can be reported, muted or blocked.</li><li>Games and rewards pay for reasoning, consistency and funded friends, never trade count.</li><li>Alerts are capped, and leaderboards rank risk-adjusted return, opt-in only.</li><li>Copy trading waits until stage 4, with caps and a stop rule.</li></ul></section>';
+  h+=v3Panel();
+  h+='<section class="panel"><h2 style="font-size:18px">Rules built in from stage 1</h2><ul class="guard"><li>Audience defaults to Only me, and trade size is off by default.</li><li>Only Kraken-verified positions carry the check; other claims are labeled.</li><li>Every share can be undone, and any post can be reported, muted or blocked.</li><li>Games and rewards pay for reasoning, consistency and funded friends, never trade count.</li><li>Alerts are capped, and leaderboards rank risk-adjusted return, opt-in only.</li><li>Copy trading waits until stage 4, with caps and a stop rule.</li><li>One new surface per release: the bottom bar stays at six tabs.</li><li>One notification budget across every type, with quiet hours and a Sunday digest.</li><li>The feed ends with a caught-up marker, and quiet mode hides the social tabs.</li><li>Stars are earned from learning, help and a verified Call record, and cannot be bought.</li></ul></section>';
   $('side').innerHTML=h}
 
 function renderStageSeg(){
@@ -477,7 +731,8 @@ function renderLayer(){
     var rs=['Scam or fraud','Harassment','Misleading claim','Not about trading'];
     h=wrap('Report or block',
      '<div><div class="title" style="font-size:19px">'+esc(rp.name)+'’s post</div><div class="sub">Reports go to Kraken’s review team. The person is not told who reported.</div></div>'+
-     '<div class="acts">'+rs.map(function(r){return '<button class="chip" data-act="repsend" data-v="'+r+'">'+r+'</button>'}).join('')+'</div>'+
+     '<div class="acts"><button class="chip" data-act="less">Show less like this</button>'+(S.stage>=2?'<button class="chip" data-act="savepost" data-id="'+rp.id+'">Save to a collection</button><button class="chip" data-act="sendto" data-id="'+rp.id+'">Share</button>':'')+'</div>'+
+     '<div class="sub">Report</div><div class="acts">'+rs.map(function(r){return '<button class="chip" data-act="repsend" data-v="'+r+'">'+r+'</button>'}).join('')+'</div>'+
      '<div class="row"><button class="btn grow" data-act="mute">Mute '+esc(rp.name.split(' ')[0])+'</button><button class="btn grow" data-act="block">Block</button></div>'+
      '<div class="sub">Community guidelines: no harassment, no promised returns, no spam. Posts that break them are blocked.</div>')}
   else if(S.sheet==='asset'){
@@ -485,7 +740,7 @@ function renderLayer(){
     h=wrap(a+' market page',
      '<div class="row between"><div><div class="title" style="font-size:19px">'+a+'</div><div class="sub">Discussion from verified traders and your squad</div></div><button class="chip" aria-pressed="'+S.mark+'" data-act="bookmark">'+(S.mark?'Saved':'Save')+'</button></div>'+
      '<div class="bubble"><div class="who">Maya R. '+CHK+'</div>Holding above the weekly close is the only thing I’m watching.</div><div class="bubble"><div class="who">Dev K. '+CHK+'</div>Smaller size into events. Same view, less exposure.</div>'+
-     '<div class="acts"><button class="btn sm" data-act="toast" data-v="Link opened in your device share sheet (illustrative)">Share</button><button class="btn sm pri" data-act="order" data-id="maya">Trade '+a+'</button></div>')}
+     '<div class="acts"><button class="btn sm" data-act="toast" data-v="Link opened in your device share sheet (illustrative)">Share</button><button class="btn sm pri" data-act="order" data-id="maya">Trade '+a+'</button></div><button class="btn grow" data-act="close">Close</button>')}
   else if(S.sheet==='quiz'){
     h=wrap('Learn quiz',
      '<div><span class="pill acc">Learn</span><div class="title" style="font-size:19px;margin-top:4px">A stop order…</div></div>'+
@@ -508,6 +763,7 @@ function renderLayer(){
      '<div class="acts"><button class="btn sm" data-act="toast" data-v="Kraktag invite sent to @priya (illustrative)">Invite by Kraktag</button><button class="btn sm" data-act="toast" data-v="Link copied (illustrative)">Copy link</button></div>'+
      '<div class="card soft"><div class="sub">Reward: flat, up to $20 for each of you, paid only after your friend funds and stays active 30 days.</div></div>'+
      '<button class="btn grow" data-act="close">Done</button>')}
+  else{var _x=v3Sheet(S.sheet,wrap);if(_x)h=_x}
   L.innerHTML=h}
 
 function renderToast(){
@@ -522,6 +778,7 @@ document.addEventListener('click',function(e){
   var el=e.target.closest('[data-act]');if(!el)return;
   if(el.classList.contains('overlay')&&e.target.closest('[data-stop]'))return;
   var a=el.dataset.act,v=el.dataset.v,id=el.dataset.id;
+  if(v3Click(a,el,v,id))return;
   if(a==='stage'){goStage(+v)}
   else if(a==='tab'){S.tab=v;S.sheet=null;draw()}
   else if(a==='feedtab'){if(v==='fol'&&S.stage<2)return;S.feedTab=v;renderScreen()}
@@ -532,7 +789,7 @@ document.addEventListener('click',function(e){
   else if(a==='fld'){S.fld[v]=!S.fld[v];renderLayer()}
   else if(a==='tag'){S.tag=S.tag===v?null:v;renderLayer()}
   else if(a==='share'){S.mine.unshift({aud:S.aud,fld:Object.assign({},S.fld),tag:S.tag,note:S.note});S.sheet=null;S.tab='feed';S.feedTab='for';draw();toast(S.aud==='me'?'Saved privately to your feed':'Shared with '+({close:'your close friends',squad:'your squad',followers:'your followers',public:'everyone'})[S.aud],true)}
-  else if(a==='undo'){if(S.toast&&S.toast.kind==='hide'){delete S.hidden[S.toast.id]}else{S.mine.shift()}S.toast=null;renderToast();renderScreen()}
+  else if(a==='undo'){if(S.toast&&S.toast.kind==='hide'){delete S.hidden[S.toast.id]}else if(S.toast&&S.toast.kind==='less'){S.dislikes.splice(S.dislikes.indexOf(S.toast.id),1)}else{S.mine.shift()}S.toast=null;renderToast();renderScreen()}
   else if(a==='unshare'){S.mine.splice(+el.dataset.i,1);renderScreen();toast('Share removed')}
   else if(a==='follow'){S.followed[id]=!S.followed[id];renderScreen()}
   else if(a==='react'){var c=S.react[id]||(S.react[id]={});c.k=c.k===v?null:v;renderScreen()}
@@ -567,7 +824,7 @@ document.addEventListener('click',function(e){
   else if(a==='winback'){S.away=false;S.tab='circle';draw()}
   else if(a==='awayoff'){S.away=false;renderScreen()}
   else if(a==='recap'){S.recapShared=true;renderScreen();toast('Recap card ready to share (illustrative)')}
-  else if(a==='goto'){var f=FEAT[v];if(!f)return;if(f[2]>S.stage)S.stage=f[2];fixAud();S.tab=f[5];S.sheet=null;draw();var sc=$('screen');if(sc)sc.scrollTop=0}
+  else if(a==='goto'){var f=FEAT[v]||V3FEAT[v];if(!f)return;if(f[2]>S.stage)S.stage=f[2];fixAud();S.tab=f[5];S.sheet=null;draw();var sc=$('screen');if(sc)sc.scrollTop=0;if(V3FEAT[v]&&!f[6])toast(f[1]+' is designed and scored but not clickable yet. See the backlog tab.')}
   else if(a==='tour'){
     if(v==='start'){S.tour=0}else if(v==='stop'){S.tour=null}else if(v==='prev'){S.tour=Math.max(0,S.tour-1)}else if(v==='next'){if(S.tour>=TOUR.length-1)S.tour=null;else S.tour++}
     if(S.tour!==null){var ts=TOUR[S.tour];S.stage=ts.s;fixAud();S.tab=ts.t;S.sheet=null}
@@ -575,9 +832,10 @@ document.addEventListener('click',function(e){
 });
 document.addEventListener('submit',function(e){
   var f=e.target.closest('[data-form="chat"]');if(!f)return;e.preventDefault();
-  var i=$('chatIn'),t=i.value.trim();if(!t)return;S.chat.push(['You',t.slice(0,200)]);renderScreen();var n=$('chatIn');if(n)n.focus()});
+  var i=$('chatIn'),t=i.value.trim();if(!t)return;S.chat.push(['You',t.slice(0,200),'u'+Date.now()]);renderScreen();var n=$('chatIn');if(n)n.focus()});
 document.addEventListener('input',function(e){
   var t=e.target;
+  if(t.dataset&&t.dataset.f){S.f[t.dataset.f]=t.value.slice(0,200);return}
   if(t.dataset&&t.dataset.note){S.note=t.value.slice(0,800);var c=$('noteCount');if(c)c.textContent=S.note.length;return}
   if(t.dataset&&t.dataset.th){S.cdraft.th=t.value;return}
   var r=t.dataset&&t.dataset.range;if(!r)return;S.copy[r]=+t.value;
