@@ -14,7 +14,6 @@
 <link rel="icon" href="icons/icon-192.png">
 <style>html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light dark}body{margin:0}[hidden]{display:none!important}</style>
 <title>Kraken Social Prototype</title>
-
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
 /* Layout concept: a phone showing the end-state app on the left; a stage panel on the right that explains what ships when, and unlocks features as you move the stage. */
@@ -119,14 +118,62 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .note{color:var(--muted);font-size:12.5px}
 .guard{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
 @media(prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
+.nav{grid-template-columns:repeat(6,1fr)}
+.overlay{z-index:9}
+.nav button{font-size:10.5px}
+.tier{display:inline-flex;align-items:center;border-radius:6px;padding:1px 6px;font-size:10.5px;font-weight:600;white-space:nowrap}
+.tier.t0{background:var(--accent-soft);color:var(--accent)}
+.tier.t1{background:var(--surface2);color:var(--muted)}
+.tier.t2{background:var(--warn-soft);color:var(--warn)}
+.funnel{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.funnel div{border:1px solid var(--line);border-radius:10px;padding:7px 4px;text-align:center;font-size:11.5px;line-height:1.2;color:var(--muted)}
+.funnel div b{display:block;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:3px}
+.funnel .p{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.funnel .a{background:var(--accent-soft);border-color:transparent;color:var(--ink)}
+.funnel .w{border-style:dashed}
+.funnel .n{opacity:.5}
+@media(max-width:520px){.funnel{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media(max-width:520px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:9px 10px;background:var(--surface2)}
+.kpi .k{font-size:11px;color:var(--muted)}
+.kpi .v{font-family:var(--font-display);font-size:19px;font-weight:700}
+.kpi .t{font-size:11px;color:var(--muted)}
+.grp{display:flex;flex-direction:column;gap:6px}
+.grp h3{font-size:13px;font-family:var(--font-body);font-weight:600;color:var(--muted)}
+.feat button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:4px 9px;font-size:12.5px;color:var(--muted);display:inline-flex;gap:5px;align-items:center}
+.feat button b{font-family:var(--font-mono);font-size:11px;font-weight:500}
+.feat button.on{background:var(--accent-soft);border-color:transparent;color:var(--ink)}
+.feat button.on b{color:var(--accent)}
+.feat button.new{outline:2px solid var(--accent);outline-offset:1px}
+.tour{border:1px solid var(--accent);background:var(--accent-soft)}
+.tourbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.steps{display:flex;gap:4px}
+.steps i{width:18px;height:5px;border-radius:9px;background:var(--line);display:block}
+.steps i.on{background:var(--accent)}
+.dots{display:flex;gap:5px}
+.dots i{width:16px;height:16px;border-radius:50%;background:var(--surface2);display:block;border:1px solid var(--line)}
+.dots i.on{background:var(--good);border-color:var(--good)}
+.badge{border:1px solid var(--line);border-radius:12px;padding:9px;text-align:center;font-size:12px;background:var(--surface)}
+.badge.got{background:var(--good-soft);border-color:transparent;color:var(--ink)}
+.badge.lock{opacity:.55}
+.badges{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.qr{width:96px;height:96px;border-radius:10px;background:repeating-conic-gradient(var(--ink) 0 25%,var(--surface) 0 50%) 0 0/16px 16px;border:6px solid var(--surface);outline:1px solid var(--line);flex:none}
+textarea{font:inherit;width:100%;min-height:64px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:9px 12px;resize:vertical}
+textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tradecard{border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--surface);margin-top:6px;display:flex;gap:10px;align-items:center}
+.tradecard .grow{font-size:12.5px}
+.sharecard{border-radius:14px;padding:12px;background:linear-gradient(135deg,var(--accent-soft),var(--surface2));display:flex;flex-direction:column;gap:2px}
+.menu{border:0;background:none;color:var(--muted);font-size:18px;line-height:1;padding:2px 6px;border-radius:8px}
+.legend{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
 </style>
 </head>
 <body>
-
 <main class="wrap">
   <header>
-    <h1>Kraken Social Prototype</h1>
-    <p class="lede">Start at the end state, then step the stage down to see what ships first. Everything in the phone is clickable. Names, prices and counts are made up for illustration; nothing here places a real order.</p>
+    <h1>Kraken Social Prototype <span class="pill acc" style="vertical-align:middle">v2</span></h1>
+    <p class="lede">Start at the end state, then step the stage down to see what ships first, or take the ten-step tour. Everything in the phone is clickable. Names, prices and counts are made up for illustration; nothing here places a real order.</p>
   </header>
   <div class="stagebar" role="group" aria-label="Prototype stage">
     <span class="lab">Stage</span>
@@ -149,29 +196,54 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 <script>
 (function(){
 var STAGES=[
- {n:1,name:'Prove it',range:'1M to 1.5M people',time:'months 0 to 3',learn:'Do people share anything, and does it change return?',gate:'15% or more accept the share prompt; sharers return at least 3 points more in week 4 than the holdout; under 1 complaint per 1,000 shares.'},
- {n:2,name:'Connect',range:'1.5M to 3M people',time:'months 3 to 9',learn:'Does a small private group pull in friends who fund?',gate:'Each active squad member brings in at least 0.3 funded friends; squad members retain better at week 4 than non-members.'},
- {n:3,name:'Gather',range:'3M to 10M people',time:'months 9 to 18',learn:'Do logged-out viewers become funded accounts?',gate:'At least 1.5% of public-page viewers create an account within 7 days, and 30% of those fund within 30 days.'},
- {n:4,name:'Monetize',range:'10M to 30M people',time:'months 18 to 36',learn:'Does social raise revenue per active without more complaints?',gate:'Connected actives earn at least 20% more revenue per active than the holdout; over-trading flags and complaints are no higher.'},
- {n:5,name:'Platform',range:'30M to 100M people',time:'year 3 to 5',learn:'Can it grow in new countries without new incentives?',gate:'End state: one social graph across Kraken, Krak, Pro and NinjaTrader.'}
+ {n:1,name:'Prove it',range:'1M to 1.5M people',time:'months 0 to 3',learn:'Do people share anything, and does it change return?',gate:'15% or more accept the share prompt; sharers return at least 3 points more in week 4 than the holdout; under 1 complaint per 1,000 shares.',
+  roles:['a','p','p','w','w','w'],why:'With 1M people and no network, the cheapest test is whether anyone shares and whether it changes behavior. Nothing is worth monetizing before that.',src:'Prompts inside the current app',
+  tg:{map:'1.5M',conn:'5%',dau:'13%',wau:'42%',ret:'67%',d30:'12%',adds:'0.7M',act:'10%',rev:'$150 per person, about $225M a year'}},
+ {n:2,name:'Connect',range:'1.5M to 3M people',time:'months 3 to 9',learn:'Does a small private group pull in friends who fund?',gate:'Each active squad member brings in at least 0.3 funded friends; squad members retain better at week 4 than non-members.',
+  roles:['p','p','a','w','-','w'],why:'Squads and share cards are the first growth loop, and a friend who joins a squad is easier to activate than a stranger.',src:'Invites, share cards, squads',
+  tg:{map:'3M',conn:'12%',dau:'15%',wau:'45%',ret:'70%',d30:'14%',adds:'1.2M',act:'20%',rev:'$150 per person, about $450M a year'}},
+ {n:3,name:'Gather',range:'3M to 10M people',time:'months 9 to 18',learn:'Do logged-out viewers become funded accounts?',gate:'At least 1.5% of public-page viewers create an account within 7 days, and 30% of those fund within 30 days.',
+  roles:['a','a','p','p','w','w'],why:'A large group needs a reason to return in quiet markets, and retention starts to decide how much acquisition is needed.',src:'Public pages, search, creators',
+  tg:{map:'10M',conn:'22%',dau:'18%',wau:'48%',ret:'73%',d30:'16%',adds:'3.5M',act:'28%',rev:'$120 per person, about $1.2B a year'}},
+ {n:4,name:'Monetize',range:'10M to 30M people',time:'months 18 to 36',learn:'Does social raise revenue per active without more complaints?',gate:'Connected actives earn at least 20% more revenue per active than the holdout; over-trading flags and complaints are no higher.',
+  roles:['a','-','-','a','p','p'],why:'Charging is safe only after free value is proven, and every new fee puts retention at risk.',src:'Partners, paid, Krak',
+  tg:{map:'30M',conn:'30%',dau:'22%',wau:'50%',ret:'77%',d30:'18%',adds:'8M',act:'33%',rev:'$90 per person, about $2.7B a year'}},
+ {n:5,name:'Platform',range:'30M to 100M people',time:'year 3 to 5',learn:'Can it grow in new countries without new incentives?',gate:'End state: one social graph across Kraken, Krak, Pro and NinjaTrader.',
+  roles:['a','-','-','p','a','p'],why:'Most of the 20M monthly adds needed at 100M just replace people who left, so retention is the main lever.',src:'Payments, new countries, viral loops',
+  tg:{map:'100M',conn:'35%',dau:'25%',wau:'52%',ret:'80%',d30:'20%',adds:'22M',act:'38%',rev:'$50 per person, about $5B a year'}}
 ];
-var FEATURES=[
- ['E2','Share-after-trade sheet',1],['E1','Trade-linked posts',1],['A7','Interest-based first run',1],['E10','Empty and failed states',1],['M1','Trade this button',1],
- ['E3','Following feed',2],['E5','Squad chat, polls, watchlist',2],['A1','Share card with referral',2],['E8','Capped notifications',2],
- ['E4','Moments rooms',3],['A3','Public trader pages',3],['A5','Event rooms for non-users',3],['E6','Meaningful reactions',3],['E9','Learn cards',3],
- ['M5','Squad goals in Earn',4],['M4','Social Pro tier',4],['M2','Capped copy trading',4],['M3','Creator revenue share',4],
- ['M7','Money in chat',5]
+var TODAY={map:'1M',conn:'0%',dau:'12%',wau:'40%',ret:'65%',d30:'11%'};
+var FUNNEL=['Acquisition','Activation','Engagement','Retention','Monetization','Churn'];
+var ROLE={p:'Primary',a:'Also',w:'Watching','-':'Later'};
+var TIERN=['Build first','Build next','Test small first'];
+/* code, short name, stage, tier (0 build first, 1 build next, 2 test small), priority in stage, tab where it lives */
+var FEATURES=[["P8", "Guidelines, block, report", 1, 0, 1, "feed"], ["E1/P3", "Trade-linked posts", 1, 0, 2, "feed"], ["E2", "Share-after-trade sheet", 1, 0, 3, "home"], ["P1", "Private profile", 1, 0, 4, "you"], ["P2", "Close friends", 1, 0, 5, "home"], ["A7/E10", "First run and empty states", 1, 0, 6, "feed"], ["M1", "Trade this", 1, 0, 7, "feed"], ["E5/P5", "Squads and trade cards", 2, 0, 1, "circle"], ["E3", "Follow and lists", 2, 0, 2, "feed"], ["E8", "Capped notifications", 2, 0, 3, "feed"], ["A1/A2/S1", "Share cards and invites", 2, 0, 4, "home"], ["R1", "Referral reward at day 30", 2, 0, 5, "you"], ["G2", "Weekly streaks", 2, 1, 6, "circle"], ["S3", "Event invite links", 2, 1, 7, "circle"], ["P6", "Market pages", 2, 1, 8, "feed"], ["R2", "Learn-to-earn", 2, 1, 9, "feed"], ["R5", "Badges", 2, 1, 10, "you"], ["P4", "Move alerts", 2, 2, 11, "feed"], ["G1", "Squad quests", 2, 2, 12, "circle"], ["P9", "Calls", 2, 2, 13, "trader"], ["G4", "Practice squads", 2, 2, 14, "circle"], ["E4/A5", "Moments and event rooms", 3, 0, 1, "moments"], ["A3/S4", "Public trader pages", 3, 0, 2, "trader"], ["R6", "Win-back from friends", 3, 0, 3, "home"], ["S2", "Season recap", 3, 1, 4, "you"], ["E7/P7", "Leaderboards", 3, 1, 5, "trader"], ["R4", "Creator status", 3, 1, 6, "trader"], ["E6/E9", "Reactions and Learn cards", 3, 1, 7, "feed"], ["G5", "Free pick’em", 3, 2, 8, "moments"], ["G3", "Seasons", 3, 2, 9, "trader"], ["M5/R3", "Squad goals and fee tier", 4, 1, 1, "circle"], ["M4", "Social Pro", 4, 1, 2, "trader"], ["M2/M3", "Capped copy trading", 4, 1, 3, "trader"], ["M7/S6", "Money in chat", 5, 1, 1, "circle"]];
+var FEAT={};FEATURES.forEach(function(f){FEAT[f[0]]=f});
+var LOCK={feed:1,home:1,you:1,trader:1,circle:2,moments:3};
+var LOCKMSG={circle:['Squads','Private groups with trade cards, polls, quests and a shared watchlist arrive in stage 2.'],moments:['Moments','Live rooms for earnings and rate decisions arrive in stage 3.']};
+var NAMES={home:'Home',feed:'Feed',circle:'Squads',moments:'Moments',trader:'Traders',you:'You'};
+var TOUR=[
+ {s:1,t:'home',c:'Stage 1 is one bet. Place the trade and the share sheet appears (E2). It defaults to Only me, and Close friends (P2) is the lowest-exposure way to share.'},
+ {s:1,t:'feed',c:'Posts carry Kraken-verified positions (E1/P3). Report, block and mute are in from day one (P8). Unverified claims are labeled.'},
+ {s:1,t:'you',c:'Every person gets a private profile by default (P1). Nothing is public until they choose it.'},
+ {s:2,t:'circle',c:'Squads (E5/P5) are the first growth loop: trade cards with a prefilled Trade this, polls, invites by Kraktag or link. Items marked Experiment are small tests with no outside evidence yet.'},
+ {s:2,t:'you',c:'The referral reward pays only after the friend funds and stays 30 days (R1). Weekly streaks and badges reward consistency, not trading.'},
+ {s:2,t:'trader',c:'Follow verified traders and make a Call with a horizon (P9, experiment). Calls build a track record that later feeds leaderboards.'},
+ {s:3,t:'moments',c:'Event rooms open to people without an account (E4/A5). Free pick’em (G5) is a small test of whether games pull in viewers.'},
+ {s:3,t:'trader',c:'Public trader pages (A3/S4), an opt-in risk-adjusted leaderboard (E7/P7) and seasons (G3, experiment) arrive once the graph exists.'},
+ {s:4,t:'trader',c:'Capped copy trading with a stop rule (M2/M3) and Social Pro (M4) come only after the stage 3 gate and a legal review.'},
+ {s:5,t:'circle',c:'Money in chat (M7/S6): split and request with friends. At 100M, retention and payments carry the funnel.'}
 ];
-var LOCK={feed:1,home:1,circle:2,moments:3,trader:1};
-var LOCKMSG={circle:['Squads','Private groups with a shared watchlist, polls and chat arrive in stage 2.'],moments:['Moments','Live rooms for earnings and rate decisions arrive in stage 3.']};
 var POSTS=[
- {id:'maya',name:'Maya R.',v:true,ago:'12m',asset:'ETH',dir:'Long',entry:'2,410.00',pl:'+4.2%',size:'Size hidden',text:'Adding on the dip. Funding is flat and the weekly close held. Stop is below last week’s low.',tags:['Ethereum','Macro']},
- {id:'dev',name:'Dev K.',v:true,ago:'1h',asset:'BTC',dir:'Hedge',entry:'64,200.00',pl:'−1.1%',size:'Size hidden',text:'Trimmed 20% ahead of earnings week and bought puts. Not a call on direction, just less exposure.',tags:['Bitcoin','Earnings']},
- {id:'sam',name:'Sam T.',v:false,ago:'3h',asset:'SOL',dir:'Long',entry:'—',pl:'—',size:'Not shown',text:'SOL is going to double, trust me.',tags:['Solana']}
+ {id:'maya',name:'Maya R.',v:true,ago:'12m',asset:'ETH',dir:'Long',entry:'2,410.00',pl:'+4.2%',text:'Adding on the dip. Funding is flat and the weekly close held. Stop is below last week’s low.',tags:['Ethereum','Macro']},
+ {id:'dev',name:'Dev K.',v:true,ago:'1h',asset:'BTC',dir:'Hedge',entry:'64,200.00',pl:'−1.1%',text:'Trimmed 20% ahead of earnings week and bought puts. Not a call on direction, just less exposure.',tags:['Bitcoin','Earnings']},
+ {id:'sam',name:'Sam T.',v:false,ago:'3h',asset:'SOL',dir:'Long',entry:'—',pl:'—',text:'SOL is going to double, trust me.',tags:['Solana']}
 ];
-var S={stage:5,tab:'home',feedTab:'for',interests:[],aud:'me',fld:{asset:true,entry:true,size:false},tag:null,sheet:null,orderId:null,
- mine:[],followed:{maya:true},react:{},vote:null,votes:[7,4,3],chat:[['Dev','Watching BTC into the close.'],['Maya','Poll is up. Vote before Friday.']],
- bull:58,alert:false,copy:{alloc:500,cap:10,stop:15},trading:false,toast:null,sent:false,t:null};
+var S={stage:5,tab:'home',feedTab:'for',interests:[],aud:'me',fld:{asset:true,entry:true,size:false},tag:null,note:'',sheet:null,orderId:null,
+ mine:[],followed:{maya:true},mv:{},react:{},vote:null,votes:[7,4,3],chat:[['Dev','Watching BTC into the close.'],['Maya','Poll is up. Vote before Friday.']],
+ bull:58,alert:false,copy:{alloc:500,cap:10,stop:15},trading:false,toast:null,sent:false,t:null,
+ hidden:{},rep:null,mark:false,quizDone:false,calls:[],cdraft:{a:'ETH',d:'Up',h:'1 month',th:''},invited:false,vis:'private',optin:false,pick:null,practice:false,
+ offline:false,away:true,joined:false,recapShared:false,tour:null,openAsset:'ETH'};
 var $=function(i){return document.getElementById(i)};
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
 var IC={
@@ -180,13 +252,17 @@ var IC={
  circle:'<path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M17 11a2.5 2.5 0 1 0 0-5M16 15c3 0 5 1.5 5 4"/>',
  moments:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
  trader:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+ you:'<path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 4-6 8-6s8 2 8 6"/>',
  lock:'<path d="M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5z"/>'
 };
 var svg=function(k,c){return '<svg viewBox="0 0 24 24" '+(c?'class="'+c+'" ':'')+'aria-hidden="true">'+IC[k]+'</svg>'};
 var CHK='<svg class="chk" viewBox="0 0 24 24" aria-label="Verified by Kraken" role="img"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-var NAMES={home:'Home',feed:'Feed',circle:'Circle',moments:'Moments',trader:'Traders'};
+function exp(code){return FEAT[code]&&FEAT[code][3]===2?' <span class="pill warn">Experiment</span>':''}
+function sheetOpen(name){S.sheet=name;S.toast=null;renderToast();renderLayer()}
 
 function locked(tab){var m=LOCKMSG[tab];return '<div class="card locked">'+svg('lock')+'<div class="title" style="font-size:18px">'+m[0]+' unlock in stage '+LOCK[tab]+'</div><div class="sub" style="max-width:30ch">'+m[1]+'</div><button class="btn sm" data-act="stage" data-v="'+LOCK[tab]+'">Jump to stage '+LOCK[tab]+'</button></div>'}
+
+function qty(n){return n===1?'1 call':n+' calls'}
 
 function post(p){
   var c=S.react[p.id]||{};
@@ -194,27 +270,35 @@ function post(p){
     ? ['Agree','Disagree','Good reasoning'].map(function(r){return '<button class="chip" aria-pressed="'+(c.k===r)+'" data-act="react" data-id="'+p.id+'" data-v="'+r+'">'+r+'</button>'}).join('')
     : '<button class="chip" aria-pressed="'+(c.k==='Like')+'" data-act="react" data-id="'+p.id+'" data-v="Like">Like</button>';
   var plc=p.pl.charAt(0)==='+'?'up':(p.pl.charAt(0)==='−'?'dn':'');
-  var h='<article class="card"><div class="row"><div class="av">'+p.name.charAt(0)+'</div><div class="grow"><div><strong>'+p.name+'</strong> '+(p.v?CHK:'<span class="pill warn">Unverified claim</span>')+'</div><div class="sub">'+p.ago+' ago</div></div>';
+  var assetCell=S.stage>=2?'<button class="chip" style="padding:2px 8px" data-act="asset" data-v="'+p.asset+'" aria-label="Open '+p.asset+' market page">'+p.asset+' '+p.dir+'</button>':p.asset+' '+p.dir;
+  var h='<article class="card"><div class="row"><div class="av">'+p.name.charAt(0)+'</div><div class="grow"><div><strong>'+p.name+'</strong> '+(p.v?CHK:'<span class="pill warn">Unverified claim</span>')+(S.stage>=3&&p.id==='maya'?' <span class="pill acc">Featured</span>':'')+'</div><div class="sub">'+p.ago+' ago</div></div>';
   if(S.stage>=2&&p.v){var f=S.followed[p.id];h+='<button class="btn sm" aria-pressed="'+!!f+'" data-act="follow" data-id="'+p.id+'">'+(f?'Following':'Follow')+'</button>'}
-  h+='</div><div class="pos"><div><div class="k">Asset</div><div class="v">'+p.asset+' '+p.dir+'</div></div><div><div class="k">Entry</div><div class="v">'+p.entry+'</div></div><div><div class="k">Since entry</div><div class="v '+plc+'">'+p.pl+'</div></div></div>';
+  h+='<button class="menu" data-act="report" data-id="'+p.id+'" aria-label="Report, block or mute '+p.name+'">⋯</button></div>';
+  h+='<div class="pos"><div><div class="k">Asset</div><div class="v">'+assetCell+'</div></div><div><div class="k">Entry</div><div class="v">'+p.entry+'</div></div><div><div class="k">Since entry</div><div class="v '+plc+'">'+p.pl+'</div></div></div>';
   h+='<div>'+esc(p.text)+'</div>';
   if(!p.v)h+='<div class="sub">Kraken has not verified a position for this post.</div>';
   h+='<div class="acts">'+reacts+'<button class="btn sm pri" style="margin-left:auto" data-act="order" data-id="'+p.id+'">Trade this</button></div></article>';
   return h}
 
 function minePost(m,i){
-  var lab={me:'Only me',squad:'Squad',followers:'Followers',public:'Public'}[m.aud];
+  var lab={me:'Only me',close:'Close friends',squad:'Squad',followers:'Followers',public:'Public'}[m.aud];
   var parts=[];if(m.fld.asset)parts.push('<div><div class="k">Asset</div><div class="v">ETH Long</div></div>');
   if(m.fld.entry)parts.push('<div><div class="k">Entry</div><div class="v">2,455.10</div></div>');
   if(m.fld.size)parts.push('<div><div class="k">Size</div><div class="v">0.05 ETH</div></div>');
   return '<article class="card"><div class="row"><div class="av">Y</div><div class="grow"><strong>You</strong> '+CHK+'<div class="sub">just now</div></div><span class="pill '+(m.aud==='me'?'':'acc')+'">'+lab+'</span></div>'+
-   (parts.length?'<div class="pos">'+parts.join('')+'</div>':'')+(m.tag?'<div><span class="pill acc">'+esc(m.tag)+'</span></div>':'')+
+   (parts.length?'<div class="pos">'+parts.join('')+'</div>':'')+(m.tag?'<div><span class="pill acc">'+esc(m.tag)+'</span></div>':'')+(m.note?'<div>'+esc(m.note)+'</div>':'')+
    '<div class="acts"><button class="btn sm" data-act="unshare" data-i="'+i+'">Undo share</button></div></article>'}
+
+function callCard(c,mine){
+  return '<article class="card"><div class="row"><div class="av">'+(mine?'Y':'M')+'</div><div class="grow"><strong>'+(mine?'You':'Maya R.')+'</strong> '+CHK+'<div class="sub">Call · '+(mine?'resolves in '+c.h:'resolves in 9 days')+'</div></div><span class="pill acc">Open</span></div>'+
+   '<div class="pos"><div><div class="k">Asset</div><div class="v">'+c.a+'</div></div><div><div class="k">Direction</div><div class="v">'+c.d+'</div></div><div><div class="k">Horizon</div><div class="v">'+c.h+'</div></div></div>'+
+   (c.th?'<div>'+esc(c.th)+'</div>':'')+'<div class="sub">Resolves on its own at the horizon and counts toward a public track record.'+exp('P9')+'</div></article>'}
 
 function home(){
   var pts=[40,44,41,48,52,50,57,55,63,61,68,72],mx=72,mn=40,d=pts.map(function(v,i){return (i?'L':'M')+(i*(300/11)).toFixed(1)+' '+(56-(v-mn)/(mx-mn)*50).toFixed(1)}).join('');
-  var h='<div class="row between"><div class="title">Portfolio</div><span class="pill">Illustrative data</span></div>'+
-  '<div class="card"><div class="sub">Total value</div><div class="big num">$12,480.22</div><div class="sub up">+$318.40 today</div>'+
+  var h='<div class="row between"><div class="title">Portfolio</div><span class="pill">Illustrative data</span></div>';
+  if(S.stage>=3&&S.away)h+='<div class="card soft"><div class="row"><div class="grow"><strong>Your squad finished its quest while you were away</strong><div class="sub">One nudge a month, from friends only. Your weekly streak is still alive.</div></div><div class="acts"><button class="btn sm pri" data-act="winback">Rejoin</button><button class="btn sm" data-act="awayoff">Dismiss</button></div></div></div>';
+  h+='<div class="card"><div class="sub">Total value</div><div class="big num">$12,480.22</div><div class="sub up">+$318.40 today</div>'+
   '<svg viewBox="0 0 300 62" width="100%" height="62" role="img" aria-label="Portfolio value trending up over twelve days"><path d="'+d+'" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'+
   '<div class="card"><div class="row between"><div><strong>Buy 0.05 ETH</strong><div class="sub">Market order · about $122.75</div></div>'+
   '<button class="btn pri" data-act="trade"'+(S.trading?' disabled':'')+'>'+(S.trading?'Placing…':'Place trade')+'</button></div><div class="sub">When it fills, a share sheet offers to turn it into a post. Skipping takes one tap.</div></div>';
@@ -222,7 +306,7 @@ function home(){
   [['BTC','0.082','$5,264','up','+2.1%'],['ETH','1.40','$3,437','up','+4.2%'],['SOL','21.0','$1,820','dn','−0.8%']].forEach(function(r){
     h+='<div class="row between"><div><strong>'+r[0]+'</strong> <span class="sub">'+r[1]+'</span></div><div class="num">'+r[2]+' <span class="'+r[3]+'">'+r[4]+'</span></div></div>'});
   h+='</div>';
-  if(S.stage>=2)h+='<div class="card soft"><div class="row"><div class="grow"><strong>Invite a friend by Kraktag</strong><div class="sub">Both of you get a bonus after their first funded trade.</div></div><button class="btn sm" data-act="toast" data-v="Invite link ready to copy (illustrative)">Invite</button></div></div>';
+  if(S.stage>=2)h+='<div class="card soft"><div class="row"><div class="grow"><strong>Invite a friend</strong><div class="sub">By Kraktag, link or QR. The reward pays after their first funded trade and 30 active days.</div></div><button class="btn sm" data-act="invite">Invite</button></div></div>';
   return h}
 
 function feed(){
@@ -230,29 +314,42 @@ function feed(){
   var h='<div class="row between"><div class="title">Feed</div>'+
    '<div class="seg"><button class="chip" aria-pressed="'+(S.feedTab==='for')+'" data-act="feedtab" data-v="for">For you</button>'+
    '<button class="chip" aria-pressed="'+(S.feedTab==='fol')+'" data-act="feedtab" data-v="fol"'+(S.stage<2?' disabled style="opacity:.45"':'')+'>Following</button></div></div>';
+  if(S.offline)return h+'<div class="card empty"><strong>Can’t load the feed</strong><div class="sub">Check your connection. Your drafts and private posts are safe on this phone.</div><div style="margin-top:8px"><button class="btn sm pri" data-act="retry">Try again</button></div></div>';
   if(S.feedTab==='for'||S.stage<2){
     h+='<div class="card soft"><div class="sub">Pick interests so the feed is useful before you follow anyone</div><div class="acts">'+ints.map(function(t){return '<button class="chip" aria-pressed="'+(S.interests.indexOf(t)>-1)+'" data-act="interest" data-v="'+t+'">'+t+'</button>'}).join('')+'</div></div>';
     S.mine.forEach(function(m,i){h+=minePost(m,i)});
-    var list=POSTS.filter(function(p){return !S.interests.length||p.tags.some(function(t){return S.interests.indexOf(t)>-1})});
+    if(S.stage>=2){S.calls.forEach(function(c){h+=callCard(c,true)});h+=callCard({a:'ETH',d:'Up',h:'1 month',th:'Spot demand is holding while funding stays flat.'},false)}
+    var list=POSTS.filter(function(p){return !S.hidden[p.id]&&(!S.interests.length||p.tags.some(function(t){return S.interests.indexOf(t)>-1}))});
     if(!list.length)h+='<div class="card empty"><strong>Nothing here yet</strong><div class="sub">No verified posts match those interests today. Try another topic or check Moments.</div></div>';
     list.forEach(function(p){h+=post(p)});
-    if(S.stage>=3)h+='<div class="card soft"><span class="pill acc">Learn</span><strong>What is a stop order?</strong><div class="sub">A stop sells automatically if price falls to a level you pick. 2 minute read in Kraken Learn.</div></div>';
+    if(S.stage>=2)h+='<div class="card soft"><span class="pill acc">Learn</span> <strong>What is a stop order?</strong><div class="sub">A stop sells automatically if price falls to a level you pick. Finish the quiz to earn up to $2 in crypto, capped at 3 rewards a month.</div><div style="margin-top:6px"><button class="btn sm pri" data-act="quiz"'+(S.quizDone?' disabled':'')+'>'+(S.quizDone?'Reward earned':'Start 2 minute lesson')+'</button></div></div>';
+    else h+='<div class="sub" style="text-align:center"><button class="chip" data-act="offline">Prototype control: simulate no connection</button></div>';
   }else{
-    var list2=POSTS.filter(function(p){return S.followed[p.id]});
+    var list2=POSTS.filter(function(p){return S.followed[p.id]&&!S.hidden[p.id]});
     if(!list2.length)h+='<div class="card empty"><strong>You are not following anyone</strong><div class="sub">Follow verified traders to build this feed. Alerts stay capped at a few a day.</div><div style="margin-top:8px"><button class="btn sm pri" data-act="feedtab" data-v="for">Find traders</button></div></div>';
     list2.forEach(function(p){h+=post(p)});
-    if(list2.length)h+='<div class="card soft row"><div class="grow"><strong>Alerts for people you follow</strong><div class="sub">Only when they act in something you hold, at most 3 a day.</div></div><button class="chip" aria-pressed="'+S.alert+'" data-act="alert">'+(S.alert?'On':'Off')+'</button></div>';
+    if(list2.length){
+      h+='<div class="card soft"><div class="row"><div class="grow"><strong>Alerts for people you follow</strong><div class="sub">Only for verified traders, at most 3 a day. Today: '+(S.alert?'1':'0')+' of 3 used.</div></div><button class="chip" aria-pressed="'+S.alert+'" data-act="alert">'+(S.alert?'On':'Off')+'</button></div></div>';
+      h+='<div class="card soft"><div class="row"><div class="grow"><strong>Move alerts for Maya R.'+exp('P4')+'</strong><div class="sub">Tells you when she opens or closes a position, delivered 15 minutes later to discourage chasing.</div></div><button class="chip" aria-pressed="'+!!S.mv.maya+'" data-act="mv">'+(S.mv.maya?'On':'Off')+'</button></div></div>'}
   }
   return h}
 
 function circle(){
   var tot=S.votes.reduce(function(a,b){return a+b},0),opts=['Hold','Trim','Add'];
-  var h='<div class="row between"><div><div class="title">Weekend Stackers</div><div class="sub">4 members · private</div></div><span class="pill good">Week 5 streak</span></div>'+
-   '<div class="card soft"><div class="sub">Shared watchlist</div><div class="acts"><span class="chip num">BTC +2.1%</span><span class="chip num">ETH +4.2%</span><span class="chip num">SOL −0.8%</span></div></div>'+
-   '<div class="card"><strong>BTC this week: hold, trim or add?</strong>'+opts.map(function(o,i){var w=Math.round(S.votes[i]/tot*100);return '<button class="opt" data-act="vote" data-v="'+i+'"><div class="fill" style="width:'+w+'%"></div><span class="row between"><span>'+o+(S.vote===i?' (your vote)':'')+'</span><span class="num">'+w+'%</span></span></button>'}).join('')+'<div class="sub">Votes show choices only. Sizes stay hidden.</div></div>';
-  if(S.stage>=4)h+='<div class="card"><div class="row between"><strong>Squad goal: $2,000 in Earn</strong><span class="num">$1,340</span></div><div class="bar"><i class="g" style="width:67%"></i></div><div class="sub">Goals reward saving together, not trading more.</div></div>';
+  var q=S.calls.length>0,qa=S.alert,ql=S.quizDone,done=(q?1:0)+(qa?1:0)+(ql?1:0);
+  var h='<div class="row between"><div><div class="title">Weekend Stackers</div><div class="sub">4 members · private · invite by Kraktag, link or QR</div></div><button class="btn sm" data-act="invite">Invite</button></div>';
+  h+='<div class="card"><div class="row between"><strong>Weekly streak: week 5</strong><span class="pill good">1 free skip a month</span></div><div class="dots" aria-label="Five of five weeks kept">'+[1,1,1,1,1].map(function(){return '<i class="on"></i>'}).join('')+'</div><div class="sub">A week counts if you read the squad thread, finish a Learn card or make a Call. Trading never extends a streak.</div></div>';
+  h+='<div class="card soft"><div class="sub">Shared watchlist</div><div class="acts"><span class="chip num">BTC +2.1%</span><span class="chip num">ETH +4.2%</span><span class="chip num">SOL −0.8%</span></div></div>';
+  h+='<div class="card"><div class="row between"><strong>This week’s quest</strong>'+exp('G1')+'</div><div class="sub">Everyone sets one alert, finishes one Learn card and makes one Call. No goal is about trading more.</div>'+
+   '<div class="acts"><span class="pill '+(qa?'good':'')+'">'+(qa?'✓ ':'')+'Set an alert</span><span class="pill '+(ql?'good':'')+'">'+(ql?'✓ ':'')+'Learn card</span><span class="pill '+(q?'good':'')+'">'+(q?'✓ ':'')+'Make a Call</span></div>'+
+   '<div class="bar" role="img" aria-label="'+done+' of 3 quest steps done"><i class="g" style="width:'+Math.round(done/3*100)+'%"></i></div>'+(done===3?'<div class="sub up">Quest complete. Badge earned.</div>':'<div class="sub">'+done+' of 3 done. Alerts live in Feed, Learn in Feed, Calls in Traders.</div>')+'</div>';
+  h+='<div class="card"><div class="row between"><strong>Practice mode</strong>'+exp('G4')+'</div><div class="sub">Friends who have not funded yet can join with a paper portfolio and play along, clearly labeled practice.</div>'+
+   '<div class="row between"><span class="num">'+(S.practice?'Paper portfolio +$312 (practice)':'Not joined')+'</span><button class="chip" aria-pressed="'+S.practice+'" data-act="practice">'+(S.practice?'Joined':'Join as practice')+'</button></div></div>';
+  h+='<div class="card"><strong>BTC this week: hold, trim or add?</strong>'+opts.map(function(o,i){var w=Math.round(S.votes[i]/tot*100);return '<button class="opt" data-act="vote" data-v="'+i+'"><div class="fill" style="width:'+w+'%"></div><span class="row between"><span>'+o+(S.vote===i?' (your vote)':'')+'</span><span class="num">'+w+'%</span></span></button>'}).join('')+'<div class="sub">Votes show choices only. Sizes stay hidden.</div></div>';
+  if(S.stage>=4)h+='<div class="card"><div class="row between"><strong>Squad goal: $2,000 in Earn</strong><span class="num">$1,340</span></div><div class="bar"><i class="g" style="width:67%"></i></div><div class="sub">Goals reward saving together, not trading more. At $2,000 the squad unlocks a lower fee tier (illustrative). Squad fee tier trades some fee revenue for balances.</div></div>';
   if(S.stage>=5)h+='<div class="card"><div class="row"><div class="grow"><strong>Split brunch</strong><div class="sub">Dev paid $48. Your share is $12.</div></div><button class="btn sm pri" data-act="pay"'+(S.sent?' disabled':'')+'>'+(S.sent?'Sent':'Send $12')+'</button></div></div>';
   h+='<div class="card" style="gap:6px">'+S.chat.map(function(m){return '<div class="bubble'+(m[0]==='You'?' me':'')+'"><div class="who">'+esc(m[0])+'</div>'+esc(m[1])+'</div>'}).join('')+
+   '<div class="bubble"><div class="who">Dev '+CHK+'</div>Closed half my BTC hedge.<div class="tradecard"><div class="grow"><strong>BTC Hedge</strong><div class="sub">Entry 64,200 · size hidden</div></div><button class="btn sm pri" data-act="order" data-id="dev">Trade this</button></div><div class="sub">Opens your own order ticket to review. It does not copy Dev.</div></div>'+
    '<form class="row" data-form="chat" style="margin-top:6px"><input id="chatIn" type="text" placeholder="Message the squad" aria-label="Message the squad" autocomplete="off"><button class="btn sm pri" type="submit">Send</button></form></div>';
   return h}
 
@@ -263,20 +360,34 @@ function moments(){
    '<div class="bar" role="img" aria-label="'+S.bull+' percent bullish"><i class="g" style="width:'+S.bull+'%"></i><i class="r" style="width:'+bear+'%"></i></div>'+
    '<div class="row between"><span class="up num">Bullish '+S.bull+'%</span><span class="dn num">Bearish '+bear+'%</span></div>'+
    '<div class="acts"><button class="btn sm" data-act="sent" data-v="1">I’m bullish</button><button class="btn sm" data-act="sent" data-v="-1">I’m bearish</button>'+
-   '<button class="chip" style="margin-left:auto" aria-pressed="'+S.alert+'" data-act="alert">'+(S.alert?'Alert on':'Alert me')+'</button></div></div>'+
-   '<div class="card" style="gap:6px"><div class="bubble"><div class="who">Maya R. '+CHK+'</div>Watching the first move, not the headline.</div><div class="bubble"><div class="who">Dev K. '+CHK+'</div>Tokenized stocks trade 24/7, so this room stays open all weekend.</div><div class="bubble"><div class="who">Learn</div>A rate decision can move several markets at once. Smaller orders help.</div></div>'+
+   '<button class="chip" style="margin-left:auto" aria-pressed="'+S.alert+'" data-act="alert">'+(S.alert?'Alert on':'Alert me')+'</button></div></div>';
+  var pk=['Cut','Hold','Raise'],pv=[41,47,12];
+  h+='<div class="card"><div class="row between"><strong>Free pick: what does the Fed do?</strong>'+exp('G5')+'</div><div class="sub">Picks are free and carry no money. Results post here when the decision lands.</div>'+
+   pk.map(function(o,i){var w=pv[i]+(S.pick===i?3:0);return '<button class="opt" data-act="pickem" data-v="'+i+'"><div class="fill" style="width:'+w+'%"></div><span class="row between"><span>'+o+(S.pick===i?' (your pick)':'')+'</span><span class="num">'+w+'%</span></span></button>'}).join('')+
+   '<div class="acts"><button class="btn sm" data-act="invite">Invite a friend to this room</button></div></div>';
+  h+='<div class="card" style="gap:6px"><div class="bubble"><div class="who">Maya R. '+CHK+'</div>Watching the first move, not the headline.</div><div class="bubble"><div class="who">Dev K. '+CHK+'</div>Tokenized stocks trade 24/7, so this room stays open all weekend.</div><div class="bubble"><div class="who">Learn</div>A rate decision can move several markets at once. Smaller orders help.</div></div>'+
    '<button class="btn pri" data-act="order" data-id="maya">Join and trade</button>';
   return h}
 
 function trader(){
   var pts=[10,14,12,20,26,24,33,31,40,46,43,52],mx=52,mn=10,d=pts.map(function(v,i){return (i?'L':'M')+(i*(300/11)).toFixed(1)+' '+(60-(v-mn)/(mx-mn)*54).toFixed(1)}).join('');
   var f=S.followed.maya;
-  var h='<div class="row between"><div class="title">Trader</div>'+(S.stage>=3?'<span class="pill acc">Public page on</span>':'<span class="pill">Private</span>')+'</div>'+
-   '<div class="card"><div class="row"><div class="av" style="width:48px;height:48px">M</div><div class="grow"><div><strong>Maya R.</strong> '+CHK+'</div><div class="sub">Verified by Kraken · 12.4k followers</div></div>'+
+  var h='<div class="row between"><div class="title">Traders</div>'+(S.stage>=3?'<span class="pill acc">Public page on</span>':'<span class="pill">Private</span>')+'</div>'+
+   '<div class="card"><div class="row"><div class="av" style="width:48px;height:48px">M</div><div class="grow"><div><strong>Maya R.</strong> '+CHK+(S.stage>=3?' <span class="pill acc">Featured</span>':'')+'</div><div class="sub">Verified by Kraken · 12.4k followers</div></div>'+
    '<button class="btn sm pri" aria-pressed="'+!!f+'" data-act="follow" data-id="maya"'+(S.stage<2?' disabled':'')+'>'+(S.stage<2?'Follow in stage 2':(f?'Following':'Follow'))+'</button></div>'+
    '<svg viewBox="0 0 300 66" width="100%" height="66" role="img" aria-label="Verified track record rising over twelve months"><path d="'+d+'" fill="none" stroke="var(--good)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
    '<div class="pos"><div><div class="k">12 months</div><div class="v up">+38.2%</div></div><div><div class="k">Risk-adjusted</div><div class="v">1.8x</div></div><div><div class="k">Worst drop</div><div class="v dn">−11%</div></div></div>'+
-   '<div class="sub">Ranked on risk-adjusted return, not raw profit. Opt-in only.</div></div>';
+   (S.stage>=2?'<div class="pos"><div><div class="k">Calls resolved</div><div class="v">7</div></div><div><div class="k">Calls right</div><div class="v">5 (71%)</div></div><div><div class="k">Badges</div><div class="v">3</div></div></div>':'')+
+   '<div class="sub">Ranked on risk-adjusted return, not raw profit. Opt-in only.</div>'+
+   (S.stage>=3?'<div class="acts"><button class="btn sm" data-act="toast" data-v="Public link copied (illustrative)">Share public page</button><button class="btn sm" data-act="toast" data-v="Share card ready for X (illustrative)">Share to X</button></div>':'')+'</div>';
+  if(S.stage>=2)h+='<div class="card"><div class="row between"><strong>Calls</strong>'+exp('P9')+'</div><div class="sub">A Call is a direction and a horizon that resolves on its own. It builds a track record without sharing balances.</div>'+(S.calls.length?'<div class="sub">You have '+qty(S.calls.length)+' open.</div>':'')+'<button class="btn pri" data-act="call">Make a Call</button></div>';
+  if(S.stage>=3){
+    h+='<div class="card"><div class="row between"><strong>Leaderboard</strong><span class="pill">Refreshed daily</span></div><div class="sub">Opt-in. Ranked on risk-adjusted return and Call accuracy, not raw profit.</div>'+
+     [['1','Maya R.','1.8x'],['2','@quietfox','1.6x'],['3','Dev K.','1.4x']].map(function(r){return '<div class="row between"><span>'+r[0]+'. '+r[1]+'</span><span class="num">'+r[2]+'</span></div>'}).join('')+
+     (S.optin?'<div class="row between"><span><strong>9. @you (anonymous handle)</strong></span><span class="num">0.9x</span></div>':'')+
+     '<div class="row between"><span class="sub">Show me on the board with an anonymous handle</span><button class="chip" aria-pressed="'+S.optin+'" data-act="optin">'+(S.optin?'Opted in':'Opt in')+'</button></div></div>';
+    h+='<div class="card"><div class="row between"><strong>Season 2 · Silver league</strong>'+exp('G3')+'</div><div class="sub">Four-week Call leagues. 19 days left. Top 5 of 20 move up, and every league resets each season so no one stays on top for good.</div>'+
+     (S.optin?'<div class="row between"><span>You are 4th of 20</span><span class="pill good">In the promotion zone</span></div>':'<div class="sub">Opt in to the leaderboard to join.</div>')+'</div>'}
   if(S.stage>=4){
     h+='<div class="card"><div class="row between"><strong>Copy with limits</strong><span class="pill warn">Selected regions only</span></div>'+
      '<label class="sub" for="al">Amount to allocate: <b class="num">$'+S.copy.alloc+'</b></label><input id="al" type="range" min="100" max="2000" step="100" value="'+S.copy.alloc+'" data-range="alloc">'+
@@ -289,68 +400,139 @@ function trader(){
     h+='<div class="card soft"><strong>Copy trading comes later</strong><div class="sub">It carries the most legal and conduct risk, so it ships after trust is built (stage 4).</div></div>'}
   return h}
 
+function you(){
+  var vis={private:'Private',close:'Close friends',public:'Public'};
+  var h='<div class="row between"><div class="title">You</div><span class="pill">'+vis[S.vis]+' profile</span></div>'+
+   '<div class="card"><div class="row"><div class="av" style="width:48px;height:48px">Y</div><div class="grow"><strong>you.kraktag</strong> '+CHK+'<div class="sub">Verified positions only · size hidden by default</div></div></div>'+
+   '<div class="sub">Who can find your profile</div><div class="acts">'+[['private','Private',1],['close','Close friends',1],['public','Public',3]].map(function(a){var ok=S.stage>=a[2];return '<button class="chip" aria-pressed="'+(S.vis===a[0])+'" data-act="vis" data-v="'+a[0]+'"'+(ok?'':' disabled style="opacity:.45;cursor:not-allowed"')+'>'+a[1]+(ok?'':' · stage '+a[2])+'</button>'}).join('')+'</div></div>';
+  if(S.stage>=2){
+    var earned=[S.mine.length>0,true,S.calls.length>0&&S.quizDone&&S.alert,false];
+    var bn=[['Verified poster','Shared a verified position'],['Squad founder','Started a squad'],['Quest finisher','Finished a weekly quest'],['Calibrated','5 Calls resolved with 60% right']];
+    h+='<div class="card"><div class="row between"><strong>Badges</strong><span class="pill">From track record, never profit</span></div><div class="badges">'+bn.map(function(b,i){return '<div class="badge '+(earned[i]?'got':'lock')+'"><strong>'+b[0]+'</strong><div class="sub">'+(earned[i]?'Earned':b[1])+'</div></div>'}).join('')+'</div></div>';
+    h+='<div class="card"><div class="row between"><strong>Friends you invited</strong><span class="pill good">Flat reward, up to $20 each</span></div>'+
+     '<div class="row between"><span>Priya · funded, day 12 of 30</span><span class="num">pending</span></div><div class="bar"><i class="g" style="width:40%"></i></div>'+
+     '<div class="row between"><span>Marcus · joined, not funded yet</span><span class="num">waiting</span></div>'+
+     '<div class="sub">The reward is paid only after a friend funds and stays active 30 days, so farming does not pay.</div><div class="acts"><button class="btn sm" data-act="invite">Invite more</button></div></div>';
+    if(S.quizDone)h+='<div class="card soft"><strong>Learn reward earned</strong><div class="sub">$2 in crypto, credited after your next funded trade this month.</div></div>'}
+  if(S.stage>=3)h+='<div class="card"><div class="row between"><strong>Season recap</strong><span class="pill acc">Shareable</span></div><div class="sharecard"><strong>Season 1 recap</strong><div class="sub">4 Calls · 3 right · 2 Learn cards · 5 week squad streak</div></div><div class="sub">Shows learning and accuracy only. No balances or trade sizes.</div><button class="btn sm pri" data-act="recap"'+(S.recapShared?' disabled':'')+'>'+(S.recapShared?'Shared':'Share recap')+'</button></div>';
+  h+='<div class="card soft"><strong>Community guidelines</strong><div class="sub">No harassment, no promised returns, no pasted referral spam. Posts that break them are blocked, and anyone can report or block from the ⋯ menu.</div></div>';
+  return h}
+
 function renderScreen(){
   var t=S.tab,h;
   if(LOCK[t]>S.stage)h=locked(t);
-  else h=({home:home,feed:feed,circle:circle,moments:moments,trader:trader})[t]();
+  else h=({home:home,feed:feed,circle:circle,moments:moments,trader:trader,you:you})[t]();
   $('screen').innerHTML=h}
 
 function renderNav(){
   $('nav').innerHTML=Object.keys(NAMES).map(function(k){var l=LOCK[k]>S.stage;return '<button data-act="tab" data-v="'+k+'"'+(S.tab===k?' aria-current="page"':'')+' aria-label="'+NAMES[k]+(l?' (locked until stage '+LOCK[k]+')':'')+'">'+svg(k)+(l?svg('lock','lk'):'')+'<span>'+NAMES[k]+'</span></button>'}).join('')}
 
 function renderSide(){
-  var st=STAGES[S.stage-1];
-  var h='<section class="panel"><span class="pill acc" style="align-self:flex-start">Stage '+st.n+' of 5</span><h2>'+st.name+'</h2><dl class="kv">'+
-   '<dt>Population</dt><dd>'+st.range+', '+st.time+'</dd><dt>Question</dt><dd>'+st.learn+'</dd><dt>Gate to pass</dt><dd>'+st.gate+'</dd></dl></section>';
-  h+='<section class="panel"><h2 style="font-size:18px">Features in this stage</h2><div class="feat">'+FEATURES.map(function(f){return '<span class="'+(f[2]<=S.stage?'on':'')+'"><b>'+f[0]+'</b>'+f[1]+'</span>'}).join('')+'</div><div class="note">Highlighted features are live in the phone. Codes match the idea list in the strategy doc.</div></section>';
-  h+='<section class="panel"><h2 style="font-size:18px">Guardrails built in from stage 1</h2><ul class="guard"><li>Audience defaults to Only me, and trade size is off by default.</li><li>Only Kraken-verified positions carry the check; other claims are labeled.</li><li>Every share can be undone.</li><li>Alerts are capped, and leaderboards rank risk-adjusted return, opt-in only.</li><li>Copy trading waits until stage 4, with caps and a stop rule.</li></ul></section>';
+  var st=STAGES[S.stage-1],h='';
+  if(S.tour!==null){
+    var tt=TOUR[S.tour];
+    h+='<section class="panel tour"><div class="tourbar"><strong>Guided tour · step '+(S.tour+1)+' of '+TOUR.length+'</strong><div class="steps">'+TOUR.map(function(x,i){return '<i class="'+(i<=S.tour?'on':'')+'"></i>'}).join('')+'</div></div><div>'+tt.c+'</div><div class="acts"><button class="btn sm" data-act="tour" data-v="prev"'+(S.tour===0?' disabled':'')+'>Back</button><button class="btn sm pri" data-act="tour" data-v="next">'+(S.tour===TOUR.length-1?'Finish':'Next')+'</button><button class="btn sm" data-act="tour" data-v="stop">Exit tour</button></div></section>'}
+  else h+='<section class="panel"><div class="row between"><div><strong>New here?</strong><div class="sub">A ten-step tour walks the phone through stages 1 to 5 and says why each feature arrives when it does.</div></div><button class="btn pri" data-act="tour" data-v="start">Start the tour</button></div></section>';
+  h+='<section class="panel"><span class="pill acc" style="align-self:flex-start">Stage '+st.n+' of 5</span><h2>'+st.name+'</h2><dl class="kv">'+
+   '<dt>Population</dt><dd>'+st.range+', '+st.time+'</dd><dt>Question</dt><dd>'+st.learn+'</dd><dt>Gate to pass</dt><dd>'+st.gate+'</dd><dt>Main source</dt><dd>'+st.src+'</dd></dl></section>';
+  h+='<section class="panel"><h2 style="font-size:18px">Funnel focus in this stage</h2><div class="funnel">'+FUNNEL.map(function(f,i){var r=st.roles[i];return '<div class="'+(r==='-'?'n':r)+'">'+f+'<b>'+ROLE[r]+'</b></div>'}).join('')+'</div><div class="note">'+st.why+' Acquisition runs in every stage; only its source changes.</div></section>';
+  var t=st.tg,td=TODAY;
+  var K=[['People (MAP)',t.map,'today '+td.map],['Connected actives',t.conn,'of people, today '+td.conn],['DAU/MAU',t.dau,'today '+td.dau],['WAU/MAU',t.wau,'today '+td.wau],['Monthly retention',t.ret,'today '+td.ret],['Day-30 retention',t.d30,'new users, today '+td.d30]];
+  h+='<section class="panel"><h2 style="font-size:18px">Targets when this stage exits</h2><div class="kpis">'+K.map(function(k){return '<div class="kpi"><div class="k">'+k[0]+'</div><div class="v">'+k[1]+'</div><div class="t">'+k[2]+'</div></div>'}).join('')+'</div>'+
+   '<dl class="kv"><dt>Gross adds</dt><dd>'+t.adds+' new or returning people a month, mostly replacing churn</dd><dt>Activation</dt><dd>'+t.act+' of new people take a social and a financial action in 14 days</dd><dt>Revenue</dt><dd>'+t.rev+'</dd></dl><div class="note">All targets are planning assumptions from the strategy doc. Real values replace them as data arrives.</div></section>';
+  var groups=[0,1,2].map(function(ti){var fs=FEATURES.filter(function(f){return f[2]<=S.stage&&f[3]===ti}).sort(function(a,b){return a[2]-b[2]||a[4]-b[4]});
+    var all=FEATURES.filter(function(f){return f[3]===ti});
+    return '<div class="grp"><h3><span class="tier t'+ti+'">'+TIERN[ti]+'</span> '+fs.length+' live of '+all.length+'</h3><div class="feat">'+all.sort(function(a,b){return a[2]-b[2]||a[4]-b[4]}).map(function(f){var on=f[2]<=S.stage;return '<button class="'+(on?'on':'')+(f[2]===S.stage?' new':'')+'" data-act="goto" data-v="'+f[0]+'" aria-label="'+f[1]+', stage '+f[2]+(on?'':', not live yet')+'"><b>'+f[0]+'</b>'+f[1]+(on?'':' · s'+f[2])+'</button>'}).join('')+'</div></div>'}).join('');
+  h+='<section class="panel"><h2 style="font-size:18px">Ideas by priority</h2>'+groups+'<div class="note">Outlined = arrives in this stage. Tap any idea to see where it lives in the phone. Test small first means no outside evidence yet, so it ships as a small experiment.</div></section>';
+  h+='<section class="panel"><h2 style="font-size:18px">Rules built in from stage 1</h2><ul class="guard"><li>Audience defaults to Only me, and trade size is off by default.</li><li>Only Kraken-verified positions carry the check; other claims are labeled.</li><li>Every share can be undone, and any post can be reported, muted or blocked.</li><li>Games and rewards pay for reasoning, consistency and funded friends, never trade count.</li><li>Alerts are capped, and leaderboards rank risk-adjusted return, opt-in only.</li><li>Copy trading waits until stage 4, with caps and a stop rule.</li></ul></section>';
   $('side').innerHTML=h}
 
 function renderStageSeg(){
   $('stageSeg').innerHTML=STAGES.map(function(s){return '<button data-act="stage" data-v="'+s.n+'" aria-pressed="'+(S.stage===s.n)+'">'+s.n+' '+s.name+'</button>'}).join('')}
 
 function renderLayer(){
-  var L=$('layer');
+  var L=$('layer'),h='';
+  function wrap(label,inner){return '<div class="overlay" data-act="close"><div class="sheet" role="dialog" aria-label="'+label+'" data-stop="1"><div class="grab"></div>'+inner+'</div></div>'}
   if(S.sheet==='share'){
-    var auds=[['me','Only me',1],['squad','Squad',2],['followers','Followers',2],['public','Public',3]];
+    var auds=[['me','Only me',1],['close','Close friends',1],['squad','Squad',2],['followers','Followers',2],['public','Public',3]];
     var tags=['Adding on a dip','Hedging','Long term','Just learning'];
     var pv=[];if(S.fld.asset)pv.push('ETH Long');if(S.fld.entry)pv.push('entry 2,455.10');if(S.fld.size)pv.push('0.05 ETH');
-    L.innerHTML='<div class="overlay" data-act="close"><div class="sheet" role="dialog" aria-label="Share this trade" data-stop="1"><div class="grab"></div>'+
+    h=wrap('Share this trade',
      '<div><div class="title" style="font-size:19px">Your order filled</div><div class="sub">Share it if you like. Skipping is fine.</div></div>'+
      '<div><div class="sub" style="margin-bottom:6px">Who can see it</div><div class="acts">'+auds.map(function(a){var ok=S.stage>=a[2];return '<button class="chip" aria-pressed="'+(S.aud===a[0])+'" data-act="aud" data-v="'+a[0]+'"'+(ok?'':' disabled style="opacity:.45;cursor:not-allowed"')+'>'+a[1]+(ok?'':' · stage '+a[2])+'</button>'}).join('')+'</div></div>'+
      '<div><div class="sub" style="margin-bottom:6px">What to show</div><div class="acts"><button class="chip" aria-pressed="'+S.fld.asset+'" data-act="fld" data-v="asset">Asset</button><button class="chip" aria-pressed="'+S.fld.entry+'" data-act="fld" data-v="entry">Entry price</button><button class="chip" aria-pressed="'+S.fld.size+'" data-act="fld" data-v="size">Size</button></div></div>'+
      '<div><div class="sub" style="margin-bottom:6px">One-tap reason</div><div class="acts">'+tags.map(function(t){return '<button class="chip" aria-pressed="'+(S.tag===t)+'" data-act="tag" data-v="'+t+'">'+t+'</button>'}).join('')+'</div></div>'+
-     '<div class="card soft"><div class="sub">Preview</div><div><strong>'+(pv.length?pv.join(' · '):'Nothing selected')+'</strong></div>'+(S.tag?'<div class="sub">'+S.tag+'</div>':'')+(S.stage>=2&&S.aud!=='me'?'<div class="sub">Link opens a preview. Invite bonus pays after a friend’s first funded trade.</div>':'')+'</div>'+
-     '<div class="row"><button class="btn grow" data-act="close">Skip</button><button class="btn pri grow" data-act="share">Share</button></div></div></div>'}
+     '<div><label class="sub" for="noteIn">Add a note (optional)</label><textarea id="noteIn" data-note="1" maxlength="800" placeholder="Why this trade?">'+esc(S.note)+'</textarea><div class="sub"><span id="noteCount">'+S.note.length+'</span> of 800 characters</div></div>'+
+     '<div class="card soft"><div class="sub">Preview</div><div><strong>'+(pv.length?pv.join(' · '):'Nothing selected')+'</strong></div>'+(S.tag?'<div class="sub">'+S.tag+'</div>':'')+
+     (S.stage>=2&&S.aud!=='me'?'<div class="sharecard" style="margin-top:6px"><strong>Share card</strong><div class="sub">'+(pv.length?pv.join(' · '):'Trade')+' · kraken.example/p/x7k2</div><div class="sub">Link opens a preview. Amounts stay hidden unless you turned them on.</div></div>':'')+'</div>'+
+     '<div class="row"><button class="btn grow" data-act="close">Skip</button><button class="btn pri grow" data-act="share">Share</button></div>')}
   else if(S.sheet==='order'){
     var p=POSTS.filter(function(x){return x.id===S.orderId})[0]||POSTS[0];
-    L.innerHTML='<div class="overlay" data-act="close"><div class="sheet" role="dialog" aria-label="Trade from post" data-stop="1"><div class="grab"></div>'+
-     '<div><div class="title" style="font-size:19px">Trade '+p.asset+'</div><div class="sub">From '+p.name+'’s post. This starts your own order, it does not copy theirs.</div></div>'+
+    h=wrap('Trade from post',
+     '<div><div class="title" style="font-size:19px">Trade '+p.asset+'</div><div class="sub">From '+p.name+'’s post. This starts your own order for you to review, it does not copy theirs.</div></div>'+
      '<div class="pos"><div><div class="k">Side</div><div class="v">Buy</div></div><div><div class="k">Amount</div><div class="v">$50.00</div></div><div><div class="k">Type</div><div class="v">Market</div></div></div>'+
-     '<div class="row"><button class="btn grow" data-act="close">Cancel</button><button class="btn pri grow" data-act="openorder">Open order</button></div></div></div>'}
-  else L.innerHTML=''}
+     '<div class="row"><button class="btn grow" data-act="close">Cancel</button><button class="btn pri grow" data-act="openorder">Open order</button></div>')}
+  else if(S.sheet==='report'){
+    var rp=POSTS.filter(function(x){return x.id===S.rep})[0]||POSTS[0];
+    var rs=['Scam or fraud','Harassment','Misleading claim','Not about trading'];
+    h=wrap('Report or block',
+     '<div><div class="title" style="font-size:19px">'+esc(rp.name)+'’s post</div><div class="sub">Reports go to Kraken’s review team. The person is not told who reported.</div></div>'+
+     '<div class="acts">'+rs.map(function(r){return '<button class="chip" data-act="repsend" data-v="'+r+'">'+r+'</button>'}).join('')+'</div>'+
+     '<div class="row"><button class="btn grow" data-act="mute">Mute '+esc(rp.name.split(' ')[0])+'</button><button class="btn grow" data-act="block">Block</button></div>'+
+     '<div class="sub">Community guidelines: no harassment, no promised returns, no spam. Posts that break them are blocked.</div>')}
+  else if(S.sheet==='asset'){
+    var a=S.openAsset;
+    h=wrap(a+' market page',
+     '<div class="row between"><div><div class="title" style="font-size:19px">'+a+'</div><div class="sub">Discussion from verified traders and your squad</div></div><button class="chip" aria-pressed="'+S.mark+'" data-act="bookmark">'+(S.mark?'Saved':'Save')+'</button></div>'+
+     '<div class="bubble"><div class="who">Maya R. '+CHK+'</div>Holding above the weekly close is the only thing I’m watching.</div><div class="bubble"><div class="who">Dev K. '+CHK+'</div>Smaller size into events. Same view, less exposure.</div>'+
+     '<div class="acts"><button class="btn sm" data-act="toast" data-v="Link opened in your device share sheet (illustrative)">Share</button><button class="btn sm pri" data-act="order" data-id="maya">Trade '+a+'</button></div>')}
+  else if(S.sheet==='quiz'){
+    h=wrap('Learn quiz',
+     '<div><span class="pill acc">Learn</span><div class="title" style="font-size:19px;margin-top:4px">A stop order…</div></div>'+
+     ['sells automatically if price falls to your level','guarantees the exact price you set','is only for buying'].map(function(o,i){return '<button class="opt" data-act="qans" data-v="'+i+'"><span>'+o+'</span></button>'}).join('')+
+     '<div class="sub">Reward: up to $2 in crypto, capped at 3 rewards a month, and it never depends on trading.</div>')}
+  else if(S.sheet==='call'){
+    var D=S.cdraft;
+    function seg(key,vals,act){return '<div class="acts">'+vals.map(function(v){return '<button class="chip" aria-pressed="'+(D[key]===v)+'" data-act="'+act+'" data-v="'+v+'">'+v+'</button>'}).join('')+'</div>'}
+    h=wrap('Make a Call',
+     '<div><div class="title" style="font-size:19px">Make a Call</div><div class="sub">A direction and a horizon. It resolves on its own and builds your track record.'+exp('P9')+'</div></div>'+
+     '<div><div class="sub" style="margin-bottom:6px">Asset</div>'+seg('a',['BTC','ETH','SOL'],'cset')+'</div>'+
+     '<div><div class="sub" style="margin-bottom:6px">Direction</div>'+seg('d',['Up','Down'],'cdir')+'</div>'+
+     '<div><div class="sub" style="margin-bottom:6px">Horizon</div>'+seg('h',['1 week','1 month','3 months'],'chor')+'</div>'+
+     '<div><label class="sub" for="thIn">Reason (optional)</label><input id="thIn" type="text" data-th="1" value="'+esc(D.th)+'" placeholder="One line on why" maxlength="140"></div>'+
+     '<div class="row"><button class="btn grow" data-act="close">Cancel</button><button class="btn pri grow" data-act="cpub">Publish Call</button></div>')}
+  else if(S.sheet==='invite'){
+    h=wrap('Invite a friend',
+     '<div><div class="title" style="font-size:19px">Invite a friend</div><div class="sub">Pick how. Non-users create an account first, then land in the squad.</div></div>'+
+     '<div class="row"><div class="qr" role="img" aria-label="QR code for the invite link (illustrative)"></div><div class="grow"><strong>kraken.example/join/stackers</strong><div class="sub">Link and QR work for anyone you share them with.</div></div></div>'+
+     '<div class="acts"><button class="btn sm" data-act="toast" data-v="Kraktag invite sent to @priya (illustrative)">Invite by Kraktag</button><button class="btn sm" data-act="toast" data-v="Link copied (illustrative)">Copy link</button></div>'+
+     '<div class="card soft"><div class="sub">Reward: flat, up to $20 for each of you, paid only after your friend funds and stays active 30 days.</div></div>'+
+     '<button class="btn grow" data-act="close">Done</button>')}
+  L.innerHTML=h}
 
 function renderToast(){
   $('toastBox').innerHTML=S.toast?'<div class="toast" role="status"><span>'+esc(S.toast.msg)+'</span>'+(S.toast.undo?'<button data-act="undo">Undo</button>':'')+'</div>':''}
 
-function toast(msg,undo){S.toast={msg:msg,undo:!!undo};clearTimeout(S.t);S.t=setTimeout(function(){S.toast=null;renderToast()},undo?7000:3500);renderToast()}
+function toast(msg,undo,kind,id){S.toast={msg:msg,undo:!!undo,kind:kind||'',id:id||''};clearTimeout(S.t);S.t=setTimeout(function(){S.toast=null;renderToast()},undo?7000:3500);renderToast()}
 function draw(){renderStageSeg();renderNav();renderScreen();renderSide();renderLayer();renderToast()}
+function fixAud(){var min={me:1,close:1,squad:2,followers:2,public:3};if(min[S.aud]>S.stage)S.aud='me';if(S.vis==='public'&&S.stage<3)S.vis='private';if(S.stage<2)S.feedTab='for'}
+function goStage(n,tab){S.stage=n;fixAud();if(tab)S.tab=tab;else if(LOCK[S.tab]>S.stage)S.tab='home';S.sheet=null;draw()}
 
 document.addEventListener('click',function(e){
   var el=e.target.closest('[data-act]');if(!el)return;
   if(el.classList.contains('overlay')&&e.target.closest('[data-stop]'))return;
   var a=el.dataset.act,v=el.dataset.v,id=el.dataset.id;
-  if(a==='stage'){S.stage=+v;if(S.aud==='followers'&&S.stage<2||S.aud==='squad'&&S.stage<2||S.aud==='public'&&S.stage<3)S.aud='me';if(S.stage<2)S.feedTab='for';if(LOCK[S.tab]>S.stage&&el.dataset.act==='stage'&&el.closest('.stagebar'))S.tab='home';draw()}
-  else if(a==='tab'){S.tab=v;draw()}
+  if(a==='stage'){goStage(+v)}
+  else if(a==='tab'){S.tab=v;S.sheet=null;draw()}
   else if(a==='feedtab'){if(v==='fol'&&S.stage<2)return;S.feedTab=v;renderScreen()}
   else if(a==='interest'){var i=S.interests.indexOf(v);if(i>-1)S.interests.splice(i,1);else S.interests.push(v);renderScreen()}
-  else if(a==='trade'){S.trading=true;renderScreen();setTimeout(function(){S.trading=false;S.sheet='share';S.tag=null;draw()},700)}
+  else if(a==='trade'){S.trading=true;renderScreen();setTimeout(function(){S.trading=false;S.sheet='share';S.tag=null;S.note='';draw()},700)}
   else if(a==='close'){S.sheet=null;renderLayer()}
   else if(a==='aud'){if(el.disabled)return;S.aud=v;renderLayer()}
   else if(a==='fld'){S.fld[v]=!S.fld[v];renderLayer()}
   else if(a==='tag'){S.tag=S.tag===v?null:v;renderLayer()}
-  else if(a==='share'){S.mine.unshift({aud:S.aud,fld:Object.assign({},S.fld),tag:S.tag});S.sheet=null;S.tab='feed';S.feedTab='for';draw();toast(S.aud==='me'?'Saved privately to your feed':'Shared with '+({squad:'your squad',followers:'your followers',public:'everyone'})[S.aud],true)}
-  else if(a==='undo'){S.mine.shift();S.toast=null;renderToast();renderScreen()}
+  else if(a==='share'){S.mine.unshift({aud:S.aud,fld:Object.assign({},S.fld),tag:S.tag,note:S.note});S.sheet=null;S.tab='feed';S.feedTab='for';draw();toast(S.aud==='me'?'Saved privately to your feed':'Shared with '+({close:'your close friends',squad:'your squad',followers:'your followers',public:'everyone'})[S.aud],true)}
+  else if(a==='undo'){if(S.toast&&S.toast.kind==='hide'){delete S.hidden[S.toast.id]}else{S.mine.shift()}S.toast=null;renderToast();renderScreen()}
   else if(a==='unshare'){S.mine.splice(+el.dataset.i,1);renderScreen();toast('Share removed')}
   else if(a==='follow'){S.followed[id]=!S.followed[id];renderScreen()}
   else if(a==='react'){var c=S.react[id]||(S.react[id]={});c.k=c.k===v?null:v;renderScreen()}
@@ -358,18 +540,51 @@ document.addEventListener('click',function(e){
   else if(a==='openorder'){S.sheet=null;renderLayer();toast('Order preview opened (illustrative, nothing was placed)')}
   else if(a==='vote'){var n=+v;if(S.vote!==null)S.votes[S.vote]--;if(S.vote===n)S.vote=null;else{S.vote=n;S.votes[n]++}renderScreen()}
   else if(a==='alert'){S.alert=!S.alert;renderScreen();toast(S.alert?'Alerts on, capped at 3 a day':'Alerts off')}
+  else if(a==='mv'){S.mv.maya=!S.mv.maya;renderScreen();toast(S.mv.maya?'Move alerts on for Maya, delivered 15 minutes later':'Move alerts off')}
   else if(a==='sent'){S.bull=Math.max(5,Math.min(95,S.bull+(+v)));renderScreen()}
   else if(a==='pay'){S.sent=true;renderScreen();toast('Sent $12 to Dev (illustrative)')}
   else if(a==='toast'){toast(v)}
+  else if(a==='report'){S.rep=id;sheetOpen('report')}
+  else if(a==='repsend'){S.sheet=null;renderLayer();toast('Reported for '+v.toLowerCase()+'. Thanks, our team will review it.')}
+  else if(a==='mute'){S.hidden[S.rep]=true;S.sheet=null;draw();toast('Muted. You won’t see their posts.',true,'hide',S.rep)}
+  else if(a==='block'){S.hidden[S.rep]=true;S.sheet=null;draw();toast('Blocked. They can’t see or reply to you.',true,'hide',S.rep)}
+  else if(a==='asset'){S.openAsset=v;sheetOpen('asset')}
+  else if(a==='bookmark'){S.mark=!S.mark;renderLayer();toast(S.mark?'Saved to your bookmarks':'Removed from bookmarks')}
+  else if(a==='quiz'){sheetOpen('quiz')}
+  else if(a==='qans'){if(v==='0'){S.quizDone=true;S.sheet=null;draw();toast('Correct. Reward of up to $2 earned.')}else{toast('Not quite. Try again.')}}
+  else if(a==='call'){sheetOpen('call')}
+  else if(a==='cset'){S.cdraft.a=v;renderLayer()}
+  else if(a==='cdir'){S.cdraft.d=v;renderLayer()}
+  else if(a==='chor'){S.cdraft.h=v;renderLayer()}
+  else if(a==='cpub'){S.calls.unshift(Object.assign({},S.cdraft));S.cdraft.th='';S.sheet=null;S.tab='feed';S.feedTab='for';draw();toast('Call published. It resolves on its own at the horizon.')}
+  else if(a==='invite'){sheetOpen('invite')}
+  else if(a==='pickem'){S.pick=S.pick===+v?null:+v;renderScreen()}
+  else if(a==='optin'){S.optin=!S.optin;renderScreen();toast(S.optin?'You are on the board as an anonymous handle':'Removed from the board')}
+  else if(a==='vis'){if(el.disabled)return;S.vis=v;renderScreen()}
+  else if(a==='practice'){S.practice=!S.practice;renderScreen()}
+  else if(a==='offline'){S.offline=true;renderScreen()}
+  else if(a==='retry'){S.offline=false;renderScreen()}
+  else if(a==='winback'){S.away=false;S.tab='circle';draw()}
+  else if(a==='awayoff'){S.away=false;renderScreen()}
+  else if(a==='recap'){S.recapShared=true;renderScreen();toast('Recap card ready to share (illustrative)')}
+  else if(a==='goto'){var f=FEAT[v];if(!f)return;if(f[2]>S.stage)S.stage=f[2];fixAud();S.tab=f[5];S.sheet=null;draw();var sc=$('screen');if(sc)sc.scrollTop=0}
+  else if(a==='tour'){
+    if(v==='start'){S.tour=0}else if(v==='stop'){S.tour=null}else if(v==='prev'){S.tour=Math.max(0,S.tour-1)}else if(v==='next'){if(S.tour>=TOUR.length-1)S.tour=null;else S.tour++}
+    if(S.tour!==null){var ts=TOUR[S.tour];S.stage=ts.s;fixAud();S.tab=ts.t;S.sheet=null}
+    draw()}
 });
 document.addEventListener('submit',function(e){
   var f=e.target.closest('[data-form="chat"]');if(!f)return;e.preventDefault();
   var i=$('chatIn'),t=i.value.trim();if(!t)return;S.chat.push(['You',t.slice(0,200)]);renderScreen();var n=$('chatIn');if(n)n.focus()});
 document.addEventListener('input',function(e){
-  var r=e.target.dataset&&e.target.dataset.range;if(!r)return;S.copy[r]=+e.target.value;
-  var id=e.target.id;renderScreen();var n=$(id);if(n)n.focus()});
+  var t=e.target;
+  if(t.dataset&&t.dataset.note){S.note=t.value.slice(0,800);var c=$('noteCount');if(c)c.textContent=S.note.length;return}
+  if(t.dataset&&t.dataset.th){S.cdraft.th=t.value;return}
+  var r=t.dataset&&t.dataset.range;if(!r)return;S.copy[r]=+t.value;
+  var id=t.id;renderScreen();var n=$(id);if(n)n.focus()});
 draw();
 })();
+
 </script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
 </body>
